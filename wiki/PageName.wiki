@@ -8,7 +8,7 @@ In here we will list all the tasks to be done.
 
 = Details =
 
-* Revise the report and eliminate errors, mistakes and excessive use of commas.
-* Translate the report to english.
-* Publish the report as a technical report.
-* Change the hierarchical naming of the packages to something like "pt.iscte.dsi.taa" instead of "pt.iscte.dcti.pa".
+ * Revise the report and eliminate errors, mistakes and excessive use of commas.
+ * Translate the report to english.
+ * Publish the report as a technical report.
+ * Change the hierarchical naming of the packages to something like "pt.iscte.dsi.taa" instead of "pt.iscte.dcti.pa".
