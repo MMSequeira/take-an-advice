@@ -1,14 +1,13 @@
 #labels Featured,Phase-QA
-This page lists to do tasks of TAA Project.
+= TODO List =
 
-= Introduction =
-
-In here we will list all the tasks to be done.
-
-
-= Details =
+High Priority
 
  * Revise the report and eliminate errors, mistakes and excessive use of commas.
- * Translate the report to english.
+ * Translate the report to English.
  * Publish the report as a technical report.
  * Change the hierarchical naming of the packages to something like "pt.iscte.dsi.taa" instead of "pt.iscte.dcti.pa".
+
+Low Priority
+ * Publish the dictionary in wiki format.
+ * Publish the report in wiki format.
