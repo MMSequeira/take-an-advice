@@ -1,5 +1,5 @@
 #labels Featured,Phase-QA
-#This page lists to do tasks of TAA Project.
+This page lists to do tasks of TAA Project.
 
 = Introduction =
 
