@@ -1,0 +1,15 @@
+#summary This page lists all the to do tasks of the project.
+
+= TODO List =
+
+High Priority:
+
+ * Revise the report and eliminate errors, mistakes and excessive use of commas.
+ * Translate the report to English.
+ * Publish the report as a technical report.
+ * Change the hierarchical naming of the packages to something like "pt.iscte.dsi.taa" instead of "pt.iscte.dcti.pa".
+
+Low Priority:
+
+ * Publish the dictionary in wiki format.
+ * Publish the report in wiki format.
