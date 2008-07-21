@@ -1,5 +1,5 @@
 #summary This page lists all the to do tasks of the project.
-#labels Featured,Phase-Requirements
+#labels Featured
 
 = TODO List =
 
