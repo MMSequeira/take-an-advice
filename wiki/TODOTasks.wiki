@@ -8,7 +8,7 @@
  * Revise the report and eliminate errors, mistakes and excessive use of commas.
  * Translate the report to English.
  * Publish the report as a technical report.
- * Change the hierarchical naming of the packages to something like "pt.iscte.dsi.taa" instead of "pt.iscte.dcti.pa".
+ * (TM 22/07/08) Change the hierarchical naming of the packages to something like "pt.iscte.dsi.taa" instead of "pt.iscte.dcti.pa".
 
 *Low Priority:*
 
