@@ -1,4 +1,8 @@
-#Thu Apr 15 19:46:15 BST 2010
+#Thu Apr 15 19:52:17 BST 2010
 eclipse.preferences.version=1
 formatter_profile=_ISCTE-IUL - DCTI
 formatter_settings_version=11
+org.eclipse.jdt.ui.exception.name=exception
+org.eclipse.jdt.ui.gettersetter.use.is=true
+org.eclipse.jdt.ui.keywordthis=false
+org.eclipse.jdt.ui.overrideannotation=true
