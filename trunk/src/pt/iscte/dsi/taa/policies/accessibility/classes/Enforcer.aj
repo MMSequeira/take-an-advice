@@ -31,7 +31,6 @@ import pt.iscte.dsi.taa.qualifiers.AccessibleFrom;
 import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
 
 /**
- *  
  * This Aspect represents the Accessibility Classes Policy Enforcer.
  * 
  * @version 1.0
