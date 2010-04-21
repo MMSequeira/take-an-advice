@@ -405,13 +405,13 @@ public abstract aspect Enforcer {
 			
 				// Own class
 				if(other_method_signature.equals(method_signature)){
-					Class[] effective_class_method_annotation_value = 
+					Class<?>[] effective_class_method_annotation_value = 
 						method.getAnnotation(AccessibleFrom.class).value();
 					
 					if(!other_method.isAnnotationPresent(AccessibleFrom.class))
 						return true;
 					else{
-						Class[] possible_accessed_class_method_annotation_value = 
+						Class<?>[] possible_accessed_class_method_annotation_value = 
 							other_method.getAnnotation(AccessibleFrom.class).value();
 						
 						if(!isSubsetOf(possible_accessed_class_method_annotation_value,
@@ -427,8 +427,8 @@ public abstract aspect Enforcer {
 							return true;
 			
 			// Interface
-			Class[] interfaces_inherited = method_class.getInterfaces();
-			for(Class interface_inherited : interfaces_inherited)
+			Class<?>[] interfaces_inherited = method_class.getInterfaces();
+			for(Class<?> interface_inherited : interfaces_inherited)
 				if(methodStrengthensSuperclassMethodAccessControl(interface_inherited, method))
 					return true;
 		
@@ -448,14 +448,14 @@ public abstract aspect Enforcer {
 	 * @return enclosing class if it strengthens, own class otherwise.
 	 */
 	@InstancePrivate
-	private Class methodAccessControlWeakenedSuperclass(Class<?> method_class, Method method)
+	private Class<?> methodAccessControlWeakenedSuperclass(Class<?> method_class, Method method)
 	{
-		Class superclass = method_class.getSuperclass();
+		Class<?> superclass = method_class.getSuperclass();
 		if(methodStrengthensSuperclassMethodAccessControl(superclass, method))
 			return superclass;
 		
-		Class[] interfaces_inherited = method_class.getInterfaces();
-		for(Class interface_inherited : interfaces_inherited)
+		Class<?>[] interfaces_inherited = method_class.getInterfaces();
+		for(Class<?> interface_inherited : interfaces_inherited)
 			if(methodStrengthensSuperclassMethodAccessControl(interface_inherited, method))
 				return interface_inherited;
 		
