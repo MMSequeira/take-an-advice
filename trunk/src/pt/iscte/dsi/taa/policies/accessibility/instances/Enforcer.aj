@@ -397,13 +397,13 @@ public abstract aspect Enforcer {
 						return true;
 			}
 				
-			Class superclass = method_class.getSuperclass();
+			Class<?> superclass = method_class.getSuperclass();
 			if(methodStrengthensSuperclassMethodAccessControl(superclass, method))
 				return true;
 			
 			
-			Class[] interfaces_inherited = method_class.getInterfaces();
-			for(Class interface_inherited : interfaces_inherited)
+			Class<?>[] interfaces_inherited = method_class.getInterfaces();
+			for(Class<?> interface_inherited : interfaces_inherited)
 				if(methodStrengthensSuperclassMethodAccessControl(interface_inherited, method))
 					return true;
 				
@@ -423,14 +423,14 @@ public abstract aspect Enforcer {
 	 * @return enclosing class if it strengthens, own class otherwise.
 	 */
 	@InstancePrivate
-	private Class methodAccessControlWeakenedSuperclass(Class<?> method_class, Method method)
+	private Class<?> methodAccessControlWeakenedSuperclass(Class<?> method_class, Method method)
 	{
-		Class superclass = method_class.getSuperclass();
+		Class<?> superclass = method_class.getSuperclass();
 		if(methodStrengthensSuperclassMethodAccessControl(superclass, method))
 			return superclass;
 		
-		Class[] interfaces_inherited = method_class.getInterfaces();
-		for(Class interface_inherited : interfaces_inherited)
+		Class<?>[] interfaces_inherited = method_class.getInterfaces();
+		for(Class<?> interface_inherited : interfaces_inherited)
 			if(methodStrengthensSuperclassMethodAccessControl(interface_inherited, method))
 				return interface_inherited;
 		

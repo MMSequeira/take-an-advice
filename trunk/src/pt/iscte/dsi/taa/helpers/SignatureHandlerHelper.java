@@ -39,9 +39,9 @@ public class SignatureHandlerHelper {
 		String long_signature = signature.toLongString().replaceAll(", ", ",");
 						
 		// Class methods list
-		Constructor[] constructors = signature.getDeclaringType().getDeclaredConstructors();
+		Constructor<?>[] constructors = signature.getDeclaringType().getDeclaredConstructors();
 		// Foreach method in the list check if the signature equals it
-		for(Constructor constructor : constructors)
+		for(Constructor<?> constructor : constructors)
 			if(constructor.toString().equals(long_signature))
 				return true;
 				

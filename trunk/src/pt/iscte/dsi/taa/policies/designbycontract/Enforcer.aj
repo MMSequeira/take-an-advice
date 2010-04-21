@@ -270,7 +270,7 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	{
 		if(DEBUG) System.out.println("After method or static initializer " + thisJoinPoint);
 
-		Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+		Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
 		
 		assert classStateIsValidOf(target_class) : "\n\tState invalid after execution of " +
 			EclipseConsoleHelper.convertToHyperlinkFormat(thisJoinPointStaticPart);
@@ -321,7 +321,7 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
     { 
     	if(DEBUG) System.out.println("Before method: " + thisJoinPoint);
 
-    	Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+    	Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
 
     	assert classStateIsValidOf(target_class) : "\n\tState invalid before execution of " +
     		EclipseConsoleHelper.convertToHyperlinkFormat(thisJoinPointStaticPart);
@@ -493,7 +493,7 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	 *  
 	 */
     @InstancePrivate
-    private void updateClassStateValidatorsOf(Class target_class) {
+    private void updateClassStateValidatorsOf(Class<?> target_class) {
     	assert Aspects.aspectOf(this.getClass(), target_class) == this : "Instantiation model is wrong??!!";
         	
        	static_state_validators = new ArrayList<Method>();
@@ -545,7 +545,7 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	 * @return conjunction's result of StateValidator declared methods invokation
 	 */ 
     @InstancePrivate
-    private boolean classStateIsValidOf(Class target_class) {
+    private boolean classStateIsValidOf(Class<?> target_class) {
     	// Lazy evalutation of the class's StateValidor declared methods list.
     	// If state validators list for this object hasn't been set, set it,
     	// otherwise, update it.
