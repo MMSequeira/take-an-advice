@@ -139,12 +139,12 @@ public abstract aspect Enforcer {
 	/*
 	 * Collections to save
 	 */
-	private pointcut instancesCollectionSet(Object object, Collection collection, Multiplicity multiplicity) :
+	private pointcut instancesCollectionSet(Object object, Collection<?> collection, Multiplicity multiplicity) :
 		scope() && !exclusions() &&
 		setOfNonStaticMultiplicityCollectionField() &&
 		target(object) && args(collection) && @annotation(multiplicity);
 	
-	private pointcut classCollectionSet(Collection collection, Multiplicity multiplicity) :
+	private pointcut classCollectionSet(Collection<?> collection, Multiplicity multiplicity) :
 		scope() && !exclusions() &&
 		setOfStaticMultiplicityCollectionField() &&
 		args(collection) && @annotation(multiplicity);
@@ -208,7 +208,7 @@ public abstract aspect Enforcer {
 			"\tmultiplicity expected: " + getInstanceCollectionWithInvalidMultiplicity(target_object).getMultiplicityItem() + "\n" + 
 			"\tmultiplicity found: " + getInstanceCollectionWithInvalidMultiplicity(target_object).getCollection().size();
 
-		Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+		Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
 		assert classMultiplicityIsValidOf(target_class) : location.getFileName() + ":" + location.getLine() + "\n" +
 			"\tmultiplicity invalid after " + thisJoinPoint + "\n" +
 			"\tmultiplicity expected: " + getClassCollectionWithInvalidMultiplicity(target_class).getMultiplicityItem() + "\n" + 
@@ -233,7 +233,7 @@ public abstract aspect Enforcer {
     	
 		org.aspectj.lang.reflect.SourceLocation location = thisJoinPointStaticPart.getSourceLocation();
 		
-		Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+		Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
 		assert classMultiplicityIsValidOf(target_class) : location.getFileName() + ":" + location.getLine() + "\n" +
 			"\tmultiplicity invalid before " + thisJoinPoint + "\n" +
 			"\tmultiplicity expected: " + getClassCollectionWithInvalidMultiplicity(target_class).getMultiplicityItem() + "\n" + 
@@ -276,7 +276,7 @@ public abstract aspect Enforcer {
 			"\tmultiplicity found: " + getInstanceCollectionWithInvalidMultiplicity(target_object).getCollection().size();
     	
     	
-    	Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+    	Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
     	assert classMultiplicityIsValidOf(target_class) : location.getFileName() + ":" + location.getLine() + "\n" +
     		"\tmultiplicity invalid before " + thisJoinPoint + "\n" +
     		"\tmultiplicity expected: " + getClassCollectionWithInvalidMultiplicity(target_class).getMultiplicityItem() + "\n" + 
@@ -307,7 +307,7 @@ public abstract aspect Enforcer {
 
 		//Object target_object = thisJoinPointStaticPart.getSignature().getDeclaringType();
 
-		Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+		Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
     	assert classMultiplicityIsValidOf(target_class) : location.getFileName() + ":" + location.getLine() + "\n" +
     		"\tmultiplicity invalid before " + thisJoinPoint + "\n" +
     		"\tmultiplicity expected: " + getClassCollectionWithInvalidMultiplicity(target_class).getMultiplicityItem() + "\n" + 
@@ -358,7 +358,7 @@ public abstract aspect Enforcer {
 	 * 
 	 */	       
     @SuppressAjWarnings("adviceDidNotMatch")
-	before(Object object, Collection referencesCollection, Multiplicity multiplicity) :
+	before(Object object, Collection<?> referencesCollection, Multiplicity multiplicity) :
 		instancesCollectionSet(object, referencesCollection, multiplicity) 
 	{
 		if(debug) System.out.println("(Register) " + thisJoinPointStaticPart + " within " + thisEnclosingJoinPointStaticPart + " {");
@@ -396,7 +396,7 @@ public abstract aspect Enforcer {
 	 * 
 	 */
     @SuppressAjWarnings("adviceDidNotMatch")
-	before(Collection referencesCollection, Multiplicity multiplicity) :
+	before(Collection<?> referencesCollection, Multiplicity multiplicity) :
 		classCollectionSet(referencesCollection, multiplicity)
 	{
 		if(debug) System.out.println("(Register) " + thisJoinPointStaticPart + " within " + thisEnclosingJoinPointStaticPart + " {");
@@ -508,7 +508,7 @@ public abstract aspect Enforcer {
 	 * 
 	 * @return true if the class's collection multiplicity is valid, false otherwise.
 	 */
-	private static boolean classMultiplicityIsValidOf(Class target_class) {
+	private static boolean classMultiplicityIsValidOf(Class<?> target_class) {
 		if(debug) 
 			System.out.println("Multiplicity is valid of: " + target_class);
 				
@@ -554,7 +554,7 @@ public abstract aspect Enforcer {
 	 * 
 	 * @return the class collection with the invalid multiplicity or null if it doesn't exist.
 	 */
-	private static ReferencesCollectionData getClassCollectionWithInvalidMultiplicity(Class target_class)
+	private static ReferencesCollectionData getClassCollectionWithInvalidMultiplicity(Class<?> target_class)
 	{
 		if(class_collections.containsKey(target_class))
 			for(ReferencesCollectionData data : class_collections.get(target_class).values()) {
@@ -591,7 +591,7 @@ public abstract aspect Enforcer {
     	 * @param collection is an object's collection object.
     	 * @param multiplicity_item is the object representing the collection's multiplicity.
     	 */
-    	public ReferencesCollectionData(Collection collection, MultiplicityItem multiplicity_item)
+    	public ReferencesCollectionData(Collection<?> collection, MultiplicityItem multiplicity_item)
     	{
     		this.collection = collection;
     		this.multiplicity_item = multiplicity_item;
@@ -606,7 +606,7 @@ public abstract aspect Enforcer {
     	 * @return ReferencesCollectionData's collection.
     	 */
     	@PureFunction
-    	public Collection getCollection(){
+    	public Collection<?> getCollection(){
     		return this.collection;
     	}
     	
@@ -627,7 +627,7 @@ public abstract aspect Enforcer {
     	 * Class Attributes
     	 */
     	@InstancePrivate
-    	private Collection collection;
+    	private Collection<?> collection;
     	@InstancePrivate
     	private MultiplicityItem multiplicity_item;
     }     

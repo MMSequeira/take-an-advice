@@ -142,12 +142,12 @@ public abstract aspect Enforcer {
 	/*
 	 * Collections to save
 	 */
-	private pointcut instancesUniqueCollectionSet(Object object, Collection collection) :
+	private pointcut instancesUniqueCollectionSet(Object object, Collection<?> collection) :
 		scope() && !exclusions() &&
 		setOfNonStaticUniqueCollectionField() &&
 		target(object) && args(collection);
 	
-	private pointcut classUniqueCollectionSet(Collection collection) :
+	private pointcut classUniqueCollectionSet(Collection<?> collection) :
 		scope() && !exclusions() &&
 		setOfStaticUniqueCollectionField() &&
 		args(collection);
@@ -213,7 +213,7 @@ public abstract aspect Enforcer {
 				Enforcer.unique_verification_first_element+" and "+
 				Enforcer.unique_verification_second_element;
 		
-		Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+		Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
 		assert classCollectionIsUnique(target_class) :location.getFileName() + ":" + location.getLine() + "\n" +
 			"\tunique property invalid after " + thisJoinPoint + "\n" +
 			"\tcollection has duplicated elements at positions "+
@@ -241,7 +241,7 @@ public abstract aspect Enforcer {
 		org.aspectj.lang.reflect.SourceLocation location = 
             thisJoinPointStaticPart.getSourceLocation();
 		
-		Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+		Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
 		assert classCollectionIsUnique(target_class) :location.getFileName() + ":" + location.getLine() + "\n" +
 			"\tunique property invalid before " + thisJoinPoint + "\n" +
 			"\tcollection has duplicated elements at positions "+
@@ -285,7 +285,7 @@ public abstract aspect Enforcer {
 				Enforcer.unique_verification_first_element+" and "+
 				Enforcer.unique_verification_second_element;
 	    
-	    Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+	    Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
 	    assert classCollectionIsUnique(target_class) :location.getFileName() + ":" + location.getLine() + "\n" +
 			"\tunique property invalid before " + thisJoinPoint + "\n" +
 			"\tcollection has duplicated elements at positions "+
@@ -314,7 +314,7 @@ public abstract aspect Enforcer {
     	org.aspectj.lang.reflect.SourceLocation location = 
     		thisJoinPointStaticPart.getSourceLocation();
 
-		Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+		Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
     	assert classCollectionIsUnique(target_class) :location.getFileName() + ":" + location.getLine() + "\n" +
 		"\tunique property invalid before " + thisJoinPoint + "\n" +
 		"\tcollection has duplicated elements at positions "+
@@ -367,14 +367,14 @@ public abstract aspect Enforcer {
 	 * 
 	 */
     @SuppressAjWarnings("adviceDidNotMatch")
-	before(Object object, Collection unique_collection) : instancesUniqueCollectionSet(object, unique_collection)
+	before(Object object, Collection<?> unique_collection) : instancesUniqueCollectionSet(object, unique_collection)
 	{
 		if(debug) System.out.println("(Register) " + thisJoinPointStaticPart + " within " + thisEnclosingJoinPointStaticPart + " {");
 		if(debug) System.out.println("\tRegistring part collection for " + thisJoinPointStaticPart.getSignature().toLongString() + ".");
 
 		if(!unique_instances_collections.containsKey(object)) 
 			unique_instances_collections.put(object,
-				new HashMap<Signature, Collection>());
+				new HashMap<Signature, Collection<?>>());
 		
 		
 		final Signature signature = thisJoinPointStaticPart.getSignature();
@@ -399,7 +399,7 @@ public abstract aspect Enforcer {
 	 * 
 	 */
     @SuppressAjWarnings("adviceDidNotMatch")
-	before(Collection unique_collection) : classUniqueCollectionSet(unique_collection)
+	before(Collection<?> unique_collection) : classUniqueCollectionSet(unique_collection)
 	{
 		if(debug) System.out.println("(Register) " + thisJoinPointStaticPart + " within " + thisEnclosingJoinPointStaticPart + " {");
 		if(debug) System.out.println("\tRegistring part collection for " + thisJoinPointStaticPart.getSignature().toLongString() + ".");
@@ -408,7 +408,7 @@ public abstract aspect Enforcer {
 		
 		if(!unique_class_collections.containsKey(object)) 
 			unique_class_collections.put(object,
-				new HashMap<Signature, Collection>());
+				new HashMap<Signature, Collection<?>>());
 		
 		
 		final Signature signature = thisJoinPointStaticPart.getSignature();
@@ -488,7 +488,7 @@ public abstract aspect Enforcer {
 			System.out.println("Unique is valid of: " + object);
 				
     	if(unique_instances_collections.containsKey(object))
-    		for(Collection collection : unique_instances_collections.get(object).values())
+    		for(Collection<?> collection : unique_instances_collections.get(object).values())
     			if(!collection.isEmpty() && collection.size() > 1){
     				Object[] collection_in_array = collection.toArray();
     				for(int i=0; i < collection_in_array.length - 1; ++i)
@@ -517,12 +517,12 @@ public abstract aspect Enforcer {
 	 * 
 	 * @return true if the class's collection is unique, false otherwise.
 	 */
-	private static boolean classCollectionIsUnique(Class target_class) {
+	private static boolean classCollectionIsUnique(Class<?> target_class) {
 		if(debug) 
 			System.out.println("Unique is valid of: " + target_class);
 				
     	if(unique_class_collections.containsKey(target_class))
-    		for(Collection collection : unique_class_collections.get(target_class).values())
+    		for(Collection<?> collection : unique_class_collections.get(target_class).values())
     			if(!collection.isEmpty() && collection.size() > 1){
     				Object[] collection_in_array = collection.toArray();
     				for(int i=0; i < collection_in_array.length - 1; ++i)
@@ -542,11 +542,11 @@ public abstract aspect Enforcer {
     /*
 	 * Attributes
 	 */
-	private static WeakHashMap<Object, HashMap<Signature, Collection>> unique_instances_collections =
-    	new WeakHashMap<Object, HashMap<Signature, Collection>>();
+	private static WeakHashMap<Object, HashMap<Signature, Collection<?>>> unique_instances_collections =
+    	new WeakHashMap<Object, HashMap<Signature, Collection<?>>>();
 	
-	private static WeakHashMap<Object, HashMap<Signature, Collection>> unique_class_collections =
-    	new WeakHashMap<Object, HashMap<Signature, Collection>>();
+	private static WeakHashMap<Object, HashMap<Signature, Collection<?>>> unique_class_collections =
+    	new WeakHashMap<Object, HashMap<Signature, Collection<?>>>();
 	
 	private static int unique_verification_first_element = 0;
 	private static int unique_verification_second_element = 0;

@@ -148,12 +148,12 @@ public abstract aspect Enforcer {
 	/*
 	 * Collections to save
 	 */
-	private pointcut instancesOrderedCollectionSet(Object object, Collection collection) :
+	private pointcut instancesOrderedCollectionSet(Object object, Collection<?> collection) :
 		scope() && !exclusions() &&
 		setOfNonStaticOrderedCollectionField() &&
 		target(object) && args(collection);
 	
-	private pointcut classOrderedCollectionSet(Collection collection) :
+	private pointcut classOrderedCollectionSet(Collection<?> collection) :
 		scope() && !exclusions() &&
 		setOfStaticOrderedCollectionField() &&
 		args(collection);
@@ -218,7 +218,7 @@ public abstract aspect Enforcer {
 			"\tcollection has unordered element at position "+
 				Enforcer.order_verification;
 		
-			Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+			Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
 			assert classCollectionIsOrdered(target_class) :location.getFileName() + ":" + location.getLine() + "\n" +
 			"\tordered property invalid before " + thisJoinPoint + "\n" +
 			"\tcollection has unordered element at position "+
@@ -244,7 +244,7 @@ public abstract aspect Enforcer {
 		org.aspectj.lang.reflect.SourceLocation location = 
             thisJoinPointStaticPart.getSourceLocation();
 		
-		Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+		Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
 		assert classCollectionIsOrdered(target_class) :location.getFileName() + ":" + location.getLine() + "\n" +
 		"\tordered property invalid before " + thisJoinPoint + "\n" +
 		"\tcollection has unordered element at position "+
@@ -286,7 +286,7 @@ public abstract aspect Enforcer {
 			"\tcollection has unordered elements at position "+
 				Enforcer.order_verification;
 
-	    Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+	    Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
 		assert classCollectionIsOrdered(target_class) :location.getFileName() + ":" + location.getLine() + "\n" +
 			"\tordered property invalid before " + thisJoinPoint + "\n" +
 			"\tcollection has unordered elements at position "+
@@ -313,7 +313,7 @@ public abstract aspect Enforcer {
     	org.aspectj.lang.reflect.SourceLocation location = 
     		thisJoinPointStaticPart.getSourceLocation();
 
-    	Class target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
+    	Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
     	assert classCollectionIsOrdered(target_class) :location.getFileName() + ":" + location.getLine() + "\n" +
 		"\tordered property invalid before " + thisJoinPoint + "\n" +
 		"\tcollection has unordered elements at position "+
@@ -366,14 +366,14 @@ public abstract aspect Enforcer {
 	 * 
 	 */
     @SuppressAjWarnings("adviceDidNotMatch")
-	before(Object object, Collection orderedCollection) : instancesOrderedCollectionSet(object, orderedCollection)
+	before(Object object, Collection<?> orderedCollection) : instancesOrderedCollectionSet(object, orderedCollection)
 	{
 		if(debug) System.out.println("(Register) " + thisJoinPointStaticPart + " within " + thisEnclosingJoinPointStaticPart + " {");
 		if(debug) System.out.println("\tRegistring part collection for " + thisJoinPointStaticPart.getSignature().toLongString() + ".");
 
 		if(!instances_ordered_collections.containsKey(object)) 
 			instances_ordered_collections.put(object,
-				new HashMap<Signature, Collection>());
+				new HashMap<Signature, Collection<?>>());
 		
 		final Signature signature = thisJoinPointStaticPart.getSignature();
 		
@@ -397,7 +397,7 @@ public abstract aspect Enforcer {
 	 * 
 	 */
     @SuppressAjWarnings("adviceDidNotMatch")
-	before(Collection orderedCollection) : classOrderedCollectionSet(orderedCollection)
+	before(Collection<?> orderedCollection) : classOrderedCollectionSet(orderedCollection)
 	{
 		if(debug) System.out.println("(Register) " + thisJoinPointStaticPart + " within " + thisEnclosingJoinPointStaticPart + " {");
 		if(debug) System.out.println("\tRegistring part collection for " + thisJoinPointStaticPart.getSignature().toLongString() + ".");
@@ -406,7 +406,7 @@ public abstract aspect Enforcer {
 		
 		if(!class_ordered_collections.containsKey(object)) 
 			class_ordered_collections.put(object,
-				new HashMap<Signature, Collection>());
+				new HashMap<Signature, Collection<?>>());
 		
 		
 		final Signature signature = thisJoinPointStaticPart.getSignature();
@@ -488,7 +488,7 @@ public abstract aspect Enforcer {
     				Enforcer.order_verification = 1;
 	    			@SuppressWarnings("unchecked")
     				Iterator<Comparable> iterator = collection.iterator();
-	        		Comparable previous_element = iterator.next();
+	        		Comparable<?> previous_element = iterator.next();
 	        		while(iterator.hasNext())
 	        		{
 	        			@SuppressWarnings("unchecked")
@@ -526,7 +526,7 @@ public abstract aspect Enforcer {
     				Enforcer.order_verification = 1;
 	    			@SuppressWarnings("unchecked")
     				Iterator<Comparable> iterator = collection.iterator();
-	        		Comparable previous_element = iterator.next();
+	        		Comparable<?> previous_element = iterator.next();
 	        		while(iterator.hasNext())
 	        		{
 	        			@SuppressWarnings("unchecked")
@@ -549,11 +549,11 @@ public abstract aspect Enforcer {
 	 * Attributes
 	 */
 	
-	private static WeakHashMap<Object, HashMap<Signature, Collection>> instances_ordered_collections =
-    	new WeakHashMap<Object, HashMap<Signature, Collection>>();
+	private static WeakHashMap<Object, HashMap<Signature, Collection<?>>> instances_ordered_collections =
+    	new WeakHashMap<Object, HashMap<Signature, Collection<?>>>();
 	
-	private static WeakHashMap<Object, HashMap<Signature, Collection>> class_ordered_collections =
-    	new WeakHashMap<Object, HashMap<Signature, Collection>>();
+	private static WeakHashMap<Object, HashMap<Signature, Collection<?>>> class_ordered_collections =
+    	new WeakHashMap<Object, HashMap<Signature, Collection<?>>>();
 	
 	private static int order_verification = 0;
 	
