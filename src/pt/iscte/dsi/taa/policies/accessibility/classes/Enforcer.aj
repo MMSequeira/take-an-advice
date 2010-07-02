@@ -25,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Stack;
 
+import pt.iscte.dsi.taa.policies.accessibility.IllicitAccessException;
 import pt.iscte.dsi.taa.policies.stack.*;
 import pt.iscte.dsi.taa.policies.Idiom;
 import pt.iscte.dsi.taa.qualifiers.AccessibleFrom;
@@ -173,7 +174,7 @@ public abstract aspect Enforcer {
 						
 			
 			if(!accessIsValid)
-				throw new IllegalAccess("\n\tAccess to an access restricted method." +
+				throw new IllicitAccessException("\n\tAccess to an access restricted method." +
 					"\n\tInvalid access from " + thisEnclosingJoinPointStaticPart.toString() +
 					"\n\tto " + thisJoinPointStaticPart.toString() + ".");
 		}		
@@ -210,7 +211,7 @@ public abstract aspect Enforcer {
 					accessIsValid = true;
 			
 			if(!accessIsValid)
-				throw new IllegalAccess("\n\tAccess to an access restricted attribute." +
+				throw new IllicitAccessException("\n\tAccess to an access restricted attribute." +
 					"\n\tInvalid access from " + thisEnclosingJoinPointStaticPart.toString() +
 					"\n\tto " + thisJoinPointStaticPart.toString() + ".");		
 		}
@@ -254,7 +255,7 @@ public abstract aspect Enforcer {
 						accessIsValid = true;
 								
 				if(!accessIsValid)
-					throw new IllegalAccess("\n\tAccess to an access restricted method through dynamic method invocation." +
+					throw new IllicitAccessException("\n\tAccess to an access restricted method through dynamic method invocation." +
 						"\n\tInvalid access from " + stack.get(stack.size()-2).toString() +
 						"\n\tto call(" + thisJoinPointStaticPart.getSignature() + ").");
 			}	

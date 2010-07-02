@@ -16,17 +16,25 @@
  * 
  */
 
-package pt.iscte.dsi.taa.policies.accessibility.instances;
+package pt.iscte.dsi.taa.policies.accessibility.classes;
 
-public class IllegalAccess extends RuntimeException {
-	
-	protected IllegalAccess() {
+import pt.iscte.dsi.taa.qualifiers.AccessibleFrom;
+
+//TODO mudamos o AccessibleFrom dos metodos para a classe, para mostrar o exemplo
+//@AccessibleFromClasses(value = Mortgage.class, methods = "")
+public class Credit {
+	@AccessibleFrom(Mortgage.class)
+	public boolean hasGoodCredit(Customer customer) {
+		System.out.println("Check credit for " + customer.getName());
+		return true;
+	}
+
+	@AccessibleFrom(Mortgage.class)
+	public boolean hasBadCredit(Customer customer) {
+		System.out.println("Check credit for " + customer.getName());
+		return false;
 	}
 	
-	protected IllegalAccess(String description) {
-		super(description);
-	}
-	
-	private static final long serialVersionUID = 3742434211281293671L;
-
+	//TODO fazer AccessibleFrom com metodos em vez de classes
+	//ver o k fazer metodo.method, ou comparar strings 
 }
