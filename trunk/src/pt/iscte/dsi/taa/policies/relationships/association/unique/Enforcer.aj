@@ -8,7 +8,7 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 
-import pt.iscte.dsi.taa.policies.Idiom;
+import pt.iscte.dsi.taa.policies.Pointcuts;
 import pt.iscte.dsi.taa.qualifiers.Unique;
 
 
@@ -71,9 +71,9 @@ public abstract aspect Enforcer {
 	
 	// Execution
 	private pointcut executionOfPrivateMethodOrPrivateConstructor() :
-		Idiom.executionOfPrivateMethod() || Idiom.executionOfPrivateConstructor();
+		Pointcuts.executionOfPrivateMethod() || Pointcuts.executionOfPrivateConstructor();
 	private pointcut executionOfNonStaticNonPrivateAndNonDestructorMethod() :
-		Idiom.executionOfNonStaticNonPrivateMethod() && !Idiom.executionOfDestructor();
+		Pointcuts.executionOfNonStaticNonPrivateMethod() && !Pointcuts.executionOfDestructor();
 		
 	
 	// Static Initialization
@@ -86,19 +86,19 @@ public abstract aspect Enforcer {
 	private pointcut getOfNonCollectionField() : get(!Collection+ *);
 	
 	private pointcut getOfNonStaticUniqueField() :
-		Idiom.getOfNonStaticField() && getOfUniqueField();
+		Pointcuts.getOfNonStaticField() && getOfUniqueField();
 	private pointcut getOfStaticUniqueField() :
-		Idiom.getOfStaticField() && getOfUniqueField();
+		Pointcuts.getOfStaticField() && getOfUniqueField();
 	
 	private pointcut getOfNonStaticUniqueCollectionField() :
-		Idiom.getOfNonStaticField() && getOfUniqueField() && getOfCollectionField();
+		Pointcuts.getOfNonStaticField() && getOfUniqueField() && getOfCollectionField();
 	private pointcut getOfStaticUniqueCollectionField() :
-		Idiom.getOfStaticField() && getOfUniqueField() && getOfCollectionField();
+		Pointcuts.getOfStaticField() && getOfUniqueField() && getOfCollectionField();
 	
 	private pointcut getOfNonStaticUniqueNonCollectionField() :
-		Idiom.getOfNonStaticField() && getOfUniqueField() && !getOfCollectionField();
+		Pointcuts.getOfNonStaticField() && getOfUniqueField() && !getOfCollectionField();
 	private pointcut getOfStaticUniqueNonCollectionField() :
-		Idiom.getOfStaticField() && getOfUniqueField() && !getOfCollectionField();
+		Pointcuts.getOfStaticField() && getOfUniqueField() && !getOfCollectionField();
 	
 		
 	// Set
@@ -107,19 +107,19 @@ public abstract aspect Enforcer {
 	private pointcut setOfNonCollectionField() : set(!Collection+ *);
 	
 	private pointcut setOfNonStaticUniqueField() :
-		Idiom.setOfNonStaticField() && setOfUniqueField();
+		Pointcuts.setOfNonStaticField() && setOfUniqueField();
 	private pointcut setOfStaticUniqueField() :
-		Idiom.setOfStaticField() && setOfUniqueField();
+		Pointcuts.setOfStaticField() && setOfUniqueField();
 	
 	private pointcut setOfNonStaticUniqueCollectionField() :
-		Idiom.setOfNonStaticField() && setOfUniqueField() && setOfCollectionField();
+		Pointcuts.setOfNonStaticField() && setOfUniqueField() && setOfCollectionField();
 	private pointcut setOfStaticUniqueCollectionField() :
-		Idiom.setOfStaticField() && setOfUniqueField() && setOfCollectionField();
+		Pointcuts.setOfStaticField() && setOfUniqueField() && setOfCollectionField();
 	
 	private pointcut setOfNonStaticUniqueNonCollectionField() :
-		Idiom.setOfNonStaticField() && setOfUniqueField() && !setOfCollectionField();
+		Pointcuts.setOfNonStaticField() && setOfUniqueField() && !setOfCollectionField();
 	private pointcut setOfStaticUniqueNonCollectionField() :
-		Idiom.setOfStaticField() && setOfUniqueField() && !setOfCollectionField();
+		Pointcuts.setOfStaticField() && setOfUniqueField() && !setOfCollectionField();
 	
 		
 	// Access (Get or Set)
@@ -159,7 +159,7 @@ public abstract aspect Enforcer {
 	private pointcut executionOfPossibleNonStaticStateChangerMethodOrConstructor(Object target_object) :
 		scope() && !exclusions() &&
 		(executionOfNonStaticNonPrivateAndNonDestructorMethod() ||
-		Idiom.executionOfNonPrivateConstructor()) &&
+		Pointcuts.executionOfNonPrivateConstructor()) &&
 		target(target_object);
 	
 	private pointcut executionOfNonStaticPossibleStateChangerMethod(Object target_object) :
@@ -169,7 +169,7 @@ public abstract aspect Enforcer {
 	
 	private pointcut executionOfPossibleStateChangerDestructor(Object target_object) :
 		scope() && !exclusions() &&
-		Idiom.executionOfDestructor() &&
+		Pointcuts.executionOfDestructor() &&
 		target(target_object);
 	
 	/*
@@ -177,10 +177,10 @@ public abstract aspect Enforcer {
 	 */
 	private pointcut executionOfPossibleStaticStateChangerMethodOrStaticInitialization() :
 		scope() && !exclusions() &&
-		(Idiom.executionOfStaticNonPrivateMethod() || staticInitialization());
+		(Pointcuts.executionOfStaticNonPrivateMethod() || staticInitialization());
 	
 	private pointcut executionOfStaticPossibleStateChangerMethod() :
-		scope() && !exclusions() && Idiom.executionOfStaticNonPrivateMethod();
+		scope() && !exclusions() && Pointcuts.executionOfStaticNonPrivateMethod();
 		
 	
 	

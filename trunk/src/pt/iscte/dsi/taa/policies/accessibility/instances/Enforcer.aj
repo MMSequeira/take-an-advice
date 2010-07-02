@@ -21,7 +21,7 @@ package pt.iscte.dsi.taa.policies.accessibility.instances;
 
 import pt.iscte.dsi.taa.policies.accessibility.IllicitAccessException;
 import pt.iscte.dsi.taa.policies.stack.*;
-import pt.iscte.dsi.taa.policies.Idiom;
+import pt.iscte.dsi.taa.policies.Pointcuts;
 import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
 
 import java.lang.reflect.Method;
@@ -70,12 +70,12 @@ public abstract aspect Enforcer {
 	private pointcut callToNonInstancePrivateMethod() : call(!@InstancePrivate * *(..));
 	
 	private pointcut callToStaticInstancePrivateMethod() :
-		Idiom.callToStaticMethod() && callToInstancePrivateMethod();
+		Pointcuts.callToStaticMethod() && callToInstancePrivateMethod();
 	
 	private pointcut callToNonStaticInstancePrivateMethod() :
-		Idiom.callToNonStaticMethod() && callToInstancePrivateMethod();
+		Pointcuts.callToNonStaticMethod() && callToInstancePrivateMethod();
 	private pointcut callToNonStaticNonPrivateInstancePrivateMethod() :
-		Idiom.callToNonStaticNonPrivateMethod() && callToInstancePrivateMethod();
+		Pointcuts.callToNonStaticNonPrivateMethod() && callToInstancePrivateMethod();
 		
 	
 	// Execution
@@ -83,12 +83,12 @@ public abstract aspect Enforcer {
 	private pointcut executionOfNonInstancePrivateMethod() : execution(!@InstancePrivate * *(..));
 
 	private pointcut executionOfStaticInstancePrivateMethod() :
-		Idiom.executionOfStaticMethod() && executionOfInstancePrivateMethod();
+		Pointcuts.executionOfStaticMethod() && executionOfInstancePrivateMethod();
 	
 	private pointcut executionOfNonStaticInstancePrivateMethod() :
-		Idiom.executionOfNonStaticMethod() && executionOfInstancePrivateMethod();
+		Pointcuts.executionOfNonStaticMethod() && executionOfInstancePrivateMethod();
 	private pointcut executionOfNonStaticNonPrivateInstancePrivateMethod() :
-		Idiom.executionOfNonStaticNonPrivateMethod() && executionOfInstancePrivateMethod();
+		Pointcuts.executionOfNonStaticNonPrivateMethod() && executionOfInstancePrivateMethod();
 
 	
 	// Get
@@ -96,12 +96,12 @@ public abstract aspect Enforcer {
 	private pointcut getOfNonInstancePrivateField() : get(!@InstancePrivate * *);
 	
 	private pointcut getOfStaticInstancePrivateField() :
-		Idiom.getOfStaticField() && getOfInstancePrivateField();
+		Pointcuts.getOfStaticField() && getOfInstancePrivateField();
 	
 	private pointcut getOfNonStaticInstancePrivateField() :
-		Idiom.getOfNonStaticField() && getOfInstancePrivateField();
+		Pointcuts.getOfNonStaticField() && getOfInstancePrivateField();
 	private pointcut getOfNonStaticNonPrivateInstancePrivateField() :
-		Idiom.getOfNonStaticNonPrivateField() && getOfInstancePrivateField();
+		Pointcuts.getOfNonStaticNonPrivateField() && getOfInstancePrivateField();
 		
 
 	// Set
@@ -109,12 +109,12 @@ public abstract aspect Enforcer {
 	private pointcut setOfNonInstancePrivateField() : set(!@InstancePrivate * *);
 	
 	private pointcut setOfStaticInstancePrivateField() :
-		Idiom.setOfStaticField() && setOfInstancePrivateField();
+		Pointcuts.setOfStaticField() && setOfInstancePrivateField();
 	
 	private pointcut setOfNonStaticInstancePrivateField() :
-		Idiom.setOfNonStaticField() && setOfInstancePrivateField();
+		Pointcuts.setOfNonStaticField() && setOfInstancePrivateField();
 	private pointcut setOfNonStaticNonPrivateInstancePrivateField() :
-		Idiom.setOfNonStaticNonPrivateField() && setOfInstancePrivateField();
+		Pointcuts.setOfNonStaticNonPrivateField() && setOfInstancePrivateField();
 	
 	
 	// Access (Get or Set)
@@ -130,7 +130,7 @@ public abstract aspect Enforcer {
 		(callToNonStaticInstancePrivateMethod() || accessToNonStaticInstancePrivateField()) && withinCodeOfStaticMethod();	
 	
 	private pointcut accessToStaticPrivateFeatureFromNonStaticMethod() :
-		(Idiom.callToStaticPrivateMethod() || Idiom.accessToStaticPrivateField()) && withinCodeOfNonStaticMethod();
+		(Pointcuts.callToStaticPrivateMethod() || Pointcuts.accessToStaticPrivateField()) && withinCodeOfNonStaticMethod();
 
 	
 	// Within Code

@@ -27,7 +27,7 @@ import org.aspectj.lang.Aspects;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 import pt.iscte.dsi.taa.helpers.EclipseConsoleHelper;
-import pt.iscte.dsi.taa.policies.Idiom;
+import pt.iscte.dsi.taa.policies.Pointcuts;
 import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
 import pt.iscte.dsi.taa.qualifiers.NonState;
 import pt.iscte.dsi.taa.qualifiers.StateModifier;
@@ -94,15 +94,15 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	private pointcut callToFinalMethod() : call(final * *(..));
 	
 	private pointcut callToNonStaticValidStateValidatorMethod() :
-		Idiom.callToNonStaticPublicMethod() && callToStateValidatorMethod() &&
+		Pointcuts.callToNonStaticPublicMethod() && callToStateValidatorMethod() &&
 		callToBooleanMethod() && callToMethodWithNoParameters() && callToFinalMethod();
 	
 	private pointcut callToValidStaticStateValidatorMethod() :
-		Idiom.callToStaticPublicMethod() && callToStateValidatorMethod() &&
+		Pointcuts.callToStaticPublicMethod() && callToStateValidatorMethod() &&
 		callToBooleanMethod() && callToMethodWithNoParameters() && callToFinalMethod();;
 	
 	private pointcut callToNonFinalNonPrivateMethod() :
-		callToNonFinalMethod() && Idiom.callToNonPrivateMethod();
+		callToNonFinalMethod() && Pointcuts.callToNonPrivateMethod();
 	
 	
 	
@@ -113,43 +113,43 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	private pointcut executionOfFinalMethod() : execution(final * *(..));
 	
 	private pointcut executionOfValidStateValidatorMethod() :
-		Idiom.executionOfNonStaticPublicMethod() && executionOfStateValidatorMethod() &&
+		Pointcuts.executionOfNonStaticPublicMethod() && executionOfStateValidatorMethod() &&
 		executionOfBooleanMethod() && executionOfMethodWithNoParameters() && executionOfFinalMethod();
 	
 	private pointcut executionOfInvalidStateValidatorMethod() :
 		executionOfStateValidatorMethod() && 
-		!(Idiom.executionOfNonStaticPublicMethod() && executionOfBooleanMethod() &&
+		!(Pointcuts.executionOfNonStaticPublicMethod() && executionOfBooleanMethod() &&
 			executionOfMethodWithNoParameters() && executionOfFinalMethod());
 	
 	private pointcut executionOfPrivateMethodOrPrivateConstructor() :
-		Idiom.executionOfPrivateMethod() || Idiom.executionOfPrivateConstructor();
+		Pointcuts.executionOfPrivateMethod() || Pointcuts.executionOfPrivateConstructor();
 	
 	private pointcut executionOfNonStaticNonPrivateAndNonDestructorMethod() :
-		Idiom.executionOfNonStaticNonPrivateMethod() && !Idiom.executionOfDestructor();
+		Pointcuts.executionOfNonStaticNonPrivateMethod() && !Pointcuts.executionOfDestructor();
 	
 	private pointcut executionOfNonStaticPossibleStateChangerMethod() : 
 		executionOfNonStaticNonPrivateAndNonDestructorMethod() &&
 		!executionOfValidStateValidatorMethod();
 	
 	private pointcut executionOfPossibleStateChangerConstructor() : 
-		Idiom.executionOfNonPrivateConstructor();
+		Pointcuts.executionOfNonPrivateConstructor();
 	
 	
 		
 	private pointcut executionOfValidClassStateValidatorMethod() :
-		Idiom.executionOfStaticPublicMethod() && executionOfStateValidatorMethod() &&
+		Pointcuts.executionOfStaticPublicMethod() && executionOfStateValidatorMethod() &&
 		executionOfBooleanMethod() && executionOfMethodWithNoParameters() && executionOfFinalMethod();
 	
 	private pointcut executionOfInvalidClassStateValidatorMethod() :
 		executionOfStateValidatorMethod() && 
-		!(Idiom.executionOfStaticPublicMethod() && executionOfBooleanMethod() &&
+		!(Pointcuts.executionOfStaticPublicMethod() && executionOfBooleanMethod() &&
 			executionOfMethodWithNoParameters() && executionOfFinalMethod());
 	
 	private pointcut executionOfPrivateMethodOrStaticInitializers() :
-		Idiom.executionOfStaticPrivateMethod() || staticInitialization();
+		Pointcuts.executionOfStaticPrivateMethod() || staticInitialization();
 	
 	private pointcut executionOfStaticPossibleStateChangerMethod() : 
-		Idiom.executionOfStaticNonPrivateMethod() &&
+		Pointcuts.executionOfStaticNonPrivateMethod() &&
 		!executionOfValidClassStateValidatorMethod();
 	
 
@@ -210,7 +210,7 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	
 	private pointcut executionOfPossibleStateChangerDestructor(Object target_object) :
 		scope() && !exclusions() && enforceable() && nonStaticEnforceable() &&
-		Idiom.executionOfDestructor() &&
+		Pointcuts.executionOfDestructor() &&
 		target(target_object);
 	
 	private pointcut executionOfPossibleStaticStateChangerMethodOrStaticInitializer() :
@@ -365,13 +365,13 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
     // Definition of how a instance StateValidator method should be declared.
     declare error : 
     	scope() && !exclusions() && enforceable() &&
-    	executionOfInvalidStateValidatorMethod() && Idiom.executionOfNonStaticMethod()
+    	executionOfInvalidStateValidatorMethod() && Pointcuts.executionOfNonStaticMethod()
     	: "A @StateValidator must be non-static, final, public, return a boolean and have no parameters.";
     
     // Definition of how a instance StateValidator method should be declared.
     declare error :
     	scope() && !exclusions() && enforceable() &&
-    	executionOfInvalidClassStateValidatorMethod() && Idiom.executionOfStaticMethod() 
+    	executionOfInvalidClassStateValidatorMethod() && Pointcuts.executionOfStaticMethod() 
     	: "A class @StateValidator must be static, final, public, return a boolean and have no parameters.";
 
     	

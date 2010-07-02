@@ -27,7 +27,7 @@ import java.util.Stack;
 
 import pt.iscte.dsi.taa.policies.accessibility.IllicitAccessException;
 import pt.iscte.dsi.taa.policies.stack.*;
-import pt.iscte.dsi.taa.policies.Idiom;
+import pt.iscte.dsi.taa.policies.Pointcuts;
 import pt.iscte.dsi.taa.qualifiers.AccessibleFrom;
 import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
 
@@ -65,30 +65,30 @@ public abstract aspect Enforcer {
 	// Call
 	private pointcut callToAccessibleFromMethod() : call(@AccessibleFrom * *(..));
 	private pointcut callToNonPrivateAccessibleFromMethod() :
-		Idiom.callToNonPrivateMethod() && callToAccessibleFromMethod();
+		Pointcuts.callToNonPrivateMethod() && callToAccessibleFromMethod();
 	private pointcut callToPrivateAccessibleFromMethod() :
-		Idiom.callToPrivateMethod() && callToAccessibleFromMethod();
+		Pointcuts.callToPrivateMethod() && callToAccessibleFromMethod();
 	
 	// Execution
 	private pointcut executionOfAccessibleFromMethod() : execution(@AccessibleFrom * *(..));
 	private pointcut executionOfNonPrivateAccessibleFromMethod() :
-		Idiom.executionOfNonPrivateMethod() && executionOfAccessibleFromMethod();
+		Pointcuts.executionOfNonPrivateMethod() && executionOfAccessibleFromMethod();
 	private pointcut executionOfPrivateAccessibleFromMethod() :
-		Idiom.executionOfPrivateMethod() && executionOfAccessibleFromMethod();
+		Pointcuts.executionOfPrivateMethod() && executionOfAccessibleFromMethod();
 	
 	// Get
 	private pointcut getOfAccessibleFromField() : get(@AccessibleFrom * *);
 	private pointcut getOfNonPrivateAccessibleFromField() :
-		Idiom.getOfNonPrivateField() && getOfAccessibleFromField();
+		Pointcuts.getOfNonPrivateField() && getOfAccessibleFromField();
 	private pointcut getOfPrivateAccessibleFromField() :
-		Idiom.getOfPrivateField() && getOfAccessibleFromField();
+		Pointcuts.getOfPrivateField() && getOfAccessibleFromField();
 	
 	// Set
 	private pointcut setOfAccessibleFromField() : set(@AccessibleFrom * *);
 	private pointcut setOfNonPrivateAccessibleFromField() :
-		Idiom.setOfNonPrivateField() && setOfAccessibleFromField();
+		Pointcuts.setOfNonPrivateField() && setOfAccessibleFromField();
 	private pointcut setOfPrivateAccessibleFromField() :
-		Idiom.setOfPrivateField() && setOfAccessibleFromField();
+		Pointcuts.setOfPrivateField() && setOfAccessibleFromField();
 	
 	// Access (Get or Set)
 	private pointcut accessToAccessibleFromField() :
@@ -126,7 +126,7 @@ public abstract aspect Enforcer {
 	
 	private pointcut accessToNonPrivateField() :
 		scope() && !exclusions() &&
-		Idiom.accessToNonPrivateField();
+		Pointcuts.accessToNonPrivateField();
 	
 	private pointcut accessToAccessibleFromAnnotatedField(AccessibleFrom annotation) :
 		scope() && !exclusions() &&
