@@ -19,7 +19,7 @@
 package pt.iscte.dsi.taa.policies;
 
 /**
- * The Idiom aspect aggregates the most common pointcuts used in the Project's Enforcers.
+ * Aggregates the most common pointcuts used in the Project's Enforcers.
  * 
  * @version 1.0
  * @author Gustavo Cabral
@@ -27,7 +27,7 @@ package pt.iscte.dsi.taa.policies;
  * @author João Catarino
  * @author Tiago Moreiras
  */
-public aspect Idiom
+public aspect Pointcuts
 {
 	/*
 	 * Call to method

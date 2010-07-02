@@ -33,7 +33,7 @@ import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 import pt.iscte.dsi.taa.helpers.EclipseConsoleHelper;
 import pt.iscte.dsi.taa.helpers.SignatureHandlerHelper;
-import pt.iscte.dsi.taa.policies.Idiom;
+import pt.iscte.dsi.taa.policies.Pointcuts;
 import pt.iscte.dsi.taa.policies.stack.StackReplica;
 import pt.iscte.dsi.taa.qualifiers.ContainerOfParts;
 import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
@@ -94,12 +94,12 @@ public abstract aspect Enforcer {
 	// Call
 	private pointcut callToPureFunctionMethod() : call(@PureFunction * *(..));
 	private pointcut callToStateModifierMethod() : call(@StateModifier * *(..));
-	private pointcut callToStaticStateModifierMethod() : Idiom.callToStaticMethod() && callToStateModifierMethod();
-	private pointcut callToNonStaticStateModifierMethod() : Idiom.callToNonStaticMethod() && callToStateModifierMethod();
-	private pointcut callToNonStaticPureFunctionMethod() : Idiom.callToNonStaticMethod() && callToPureFunctionMethod();
+	private pointcut callToStaticStateModifierMethod() : Pointcuts.callToStaticMethod() && callToStateModifierMethod();
+	private pointcut callToNonStaticStateModifierMethod() : Pointcuts.callToNonStaticMethod() && callToStateModifierMethod();
+	private pointcut callToNonStaticPureFunctionMethod() : Pointcuts.callToNonStaticMethod() && callToPureFunctionMethod();
 	
 	private pointcut callToNonPureFunctionMethod() : call(!@PureFunction * *(..));
-	private pointcut callToNonStaticNonPureFunctionMethod() : Idiom.callToNonStaticMethod() && callToNonPureFunctionMethod();
+	private pointcut callToNonStaticNonPureFunctionMethod() : Pointcuts.callToNonStaticMethod() && callToNonPureFunctionMethod();
 	
 	
 	
@@ -109,12 +109,12 @@ public abstract aspect Enforcer {
 	private pointcut executionOfStateModifierMethod() : execution(@StateModifier * *(..));
 	private pointcut executionOfPureFunctionMethod() : execution(@PureFunction * *(..));
 	
-	private pointcut executionOfStaticStateModifierMethod() : Idiom.executionOfStaticMethod() && executionOfStateModifierMethod();
-	private pointcut executionOfStaticNonStateModifierMethod() : Idiom.executionOfStaticMethod() && executionOfNonStateModifierMethod();
+	private pointcut executionOfStaticStateModifierMethod() : Pointcuts.executionOfStaticMethod() && executionOfStateModifierMethod();
+	private pointcut executionOfStaticNonStateModifierMethod() : Pointcuts.executionOfStaticMethod() && executionOfNonStateModifierMethod();
 	
-	private pointcut executionOfNonStaticStateModifierMethod() : Idiom.executionOfNonStaticMethod() && executionOfStateModifierMethod();
-	private pointcut executionOfNonStaticNonStateModifierMethod() : Idiom.executionOfNonStaticMethod() && executionOfNonStateModifierMethod();
-	private pointcut executionOfNonStaticPureFunctionMethod() : Idiom.executionOfNonStaticMethod() && executionOfPureFunctionMethod();	
+	private pointcut executionOfNonStaticStateModifierMethod() : Pointcuts.executionOfNonStaticMethod() && executionOfStateModifierMethod();
+	private pointcut executionOfNonStaticNonStateModifierMethod() : Pointcuts.executionOfNonStaticMethod() && executionOfNonStateModifierMethod();
+	private pointcut executionOfNonStaticPureFunctionMethod() : Pointcuts.executionOfNonStaticMethod() && executionOfPureFunctionMethod();	
 	
 	
 	
@@ -136,22 +136,22 @@ public abstract aspect Enforcer {
 	private pointcut getOfPrimitiveContainerOfPartsField() : getOfPrimitiveField() && getOfContainerOfPartsField();
 	private pointcut getOfNonEligibleContainerOfPartsField() : getOfContainerOfPartsField() &&
 		!getOfArrayField() && !getOfMapField() && !getOfCollectionField();
-	private pointcut getOfNonPrivatePartField(): Idiom.getOfNonPrivateField() && getOfPartField();
-	private pointcut getOfNonPrivateContainerOfPartsField(): Idiom.getOfNonPrivateField() && getOfContainerOfPartsField();
-	private pointcut getOfNonFinalNonPrivateField() : getOfNonFinalField() && Idiom.getOfNonPrivateField();
+	private pointcut getOfNonPrivatePartField(): Pointcuts.getOfNonPrivateField() && getOfPartField();
+	private pointcut getOfNonPrivateContainerOfPartsField(): Pointcuts.getOfNonPrivateField() && getOfContainerOfPartsField();
+	private pointcut getOfNonFinalNonPrivateField() : getOfNonFinalField() && Pointcuts.getOfNonPrivateField();
 		
-	private pointcut getOfStaticNonStateField() : Idiom.getOfStaticField() && getOfNonStateField();
-	private pointcut getOfStaticPartField() : Idiom.getOfStaticField() && getOfPartField();
-	private pointcut getOfStaticPrimitivePartField() : Idiom.getOfStaticField() && getOfPartField() && getOfPrimitiveField();
+	private pointcut getOfStaticNonStateField() : Pointcuts.getOfStaticField() && getOfNonStateField();
+	private pointcut getOfStaticPartField() : Pointcuts.getOfStaticField() && getOfPartField();
+	private pointcut getOfStaticPrimitivePartField() : Pointcuts.getOfStaticField() && getOfPartField() && getOfPrimitiveField();
 	
-	private pointcut getOfNonStaticNonStateField() : Idiom.getOfNonStaticField() && getOfNonStateField();
-	private pointcut getOfNonStaticPartField() : Idiom.getOfNonStaticField() && getOfPartField();
-	private pointcut getOfNonStaticPrimitivePartField() : Idiom.getOfNonStaticField() && getOfPartField() && getOfPrimitiveField();
+	private pointcut getOfNonStaticNonStateField() : Pointcuts.getOfNonStaticField() && getOfNonStateField();
+	private pointcut getOfNonStaticPartField() : Pointcuts.getOfNonStaticField() && getOfPartField();
+	private pointcut getOfNonStaticPrimitivePartField() : Pointcuts.getOfNonStaticField() && getOfPartField() && getOfPrimitiveField();
 	private pointcut getOfNonStaticNonFinalPrivateNonInstancePrivateField() :
-		Idiom.getOfNonStaticPrivateField() && getOfNonFinalField() && getOfNonInstancePrivateField();
-	private pointcut getOfNonStaticNonInstancePrivatePartField(): Idiom.getOfNonStaticField() &&
+		Pointcuts.getOfNonStaticPrivateField() && getOfNonFinalField() && getOfNonInstancePrivateField();
+	private pointcut getOfNonStaticNonInstancePrivatePartField(): Pointcuts.getOfNonStaticField() &&
 		getOfNonInstancePrivateField() && getOfPartField();
-	private pointcut getOfNonStaticNonInstancePrivateContainerOfPartsField(): Idiom.getOfNonStaticField() &&
+	private pointcut getOfNonStaticNonInstancePrivateContainerOfPartsField(): Pointcuts.getOfNonStaticField() &&
 		getOfNonInstancePrivateField() && getOfContainerOfPartsField();
 	
 	
@@ -175,36 +175,36 @@ public abstract aspect Enforcer {
 	private pointcut setOfPrimitiveContainerOfPartsField() : setOfPrimitiveField() && setOfContainerOfPartsField();
 	private pointcut setOfNonEligibleContainerOfPartsField() : setOfContainerOfPartsField() &&
 		!setOfArrayField() && !setOfMapField() && !setOfCollectionField();
-	private pointcut setOfNonPrivatePartField(): Idiom.setOfNonPrivateField() && setOfPartField();
-	private pointcut setOfNonPrivateContainerOfPartsField(): Idiom.setOfNonPrivateField() && setOfContainerOfPartsField();
-	private pointcut setOfNonFinalNonPrivateField() : setOfNonFinalField() && Idiom.setOfNonPrivateField();
+	private pointcut setOfNonPrivatePartField(): Pointcuts.setOfNonPrivateField() && setOfPartField();
+	private pointcut setOfNonPrivateContainerOfPartsField(): Pointcuts.setOfNonPrivateField() && setOfContainerOfPartsField();
+	private pointcut setOfNonFinalNonPrivateField() : setOfNonFinalField() && Pointcuts.setOfNonPrivateField();
 	
-	private pointcut setOfStaticStateField() : Idiom.setOfStaticField() && setOfStateField();
-	private pointcut setOfStaticNonStateField() : Idiom.setOfStaticField() && setOfNonStateField();
-	private pointcut setOfStaticPartField() : Idiom.setOfStaticField() && setOfPartField();
-	private pointcut setOfStaticPrimitivePartField() : Idiom.setOfStaticField() && setOfPartField() && setOfPrimitiveField();
+	private pointcut setOfStaticStateField() : Pointcuts.setOfStaticField() && setOfStateField();
+	private pointcut setOfStaticNonStateField() : Pointcuts.setOfStaticField() && setOfNonStateField();
+	private pointcut setOfStaticPartField() : Pointcuts.setOfStaticField() && setOfPartField();
+	private pointcut setOfStaticPrimitivePartField() : Pointcuts.setOfStaticField() && setOfPartField() && setOfPrimitiveField();
 	private pointcut setOfStaticContainerOfPartsArrayField() :
-		Idiom.setOfStaticField() && setOfContainerOfPartsField() && setOfArrayField();
+		Pointcuts.setOfStaticField() && setOfContainerOfPartsField() && setOfArrayField();
 	private pointcut setOfStaticContainerOfPartsMapField() :
-		Idiom.setOfStaticField() && setOfContainerOfPartsField() && setOfMapField();
+		Pointcuts.setOfStaticField() && setOfContainerOfPartsField() && setOfMapField();
 	private pointcut setOfStaticContainerOfPartsCollectionField() :
-		Idiom.setOfStaticField() && setOfContainerOfPartsField() && setOfCollectionField();
+		Pointcuts.setOfStaticField() && setOfContainerOfPartsField() && setOfCollectionField();
 	
-	private pointcut setOfNonStaticStateField() : Idiom.setOfNonStaticField() && setOfStateField();
-	private pointcut setOfNonStaticNonStateField() : Idiom.setOfNonStaticField() && setOfNonStateField();
-	private pointcut setOfNonStaticPartField() : Idiom.setOfNonStaticField() && setOfPartField();
-	private pointcut setOfNonStaticPrimitivePartField() : Idiom.setOfNonStaticField() && setOfPartField() && setOfPrimitiveField();
+	private pointcut setOfNonStaticStateField() : Pointcuts.setOfNonStaticField() && setOfStateField();
+	private pointcut setOfNonStaticNonStateField() : Pointcuts.setOfNonStaticField() && setOfNonStateField();
+	private pointcut setOfNonStaticPartField() : Pointcuts.setOfNonStaticField() && setOfPartField();
+	private pointcut setOfNonStaticPrimitivePartField() : Pointcuts.setOfNonStaticField() && setOfPartField() && setOfPrimitiveField();
 	private pointcut setOfNonStaticContainerOfPartsArrayField() :
-		Idiom.setOfNonStaticField() && setOfContainerOfPartsField() && setOfArrayField();
+		Pointcuts.setOfNonStaticField() && setOfContainerOfPartsField() && setOfArrayField();
 	private pointcut setOfNonStaticContainerOfPartsMapField() :
-		Idiom.setOfNonStaticField() && setOfContainerOfPartsField() && setOfMapField();
+		Pointcuts.setOfNonStaticField() && setOfContainerOfPartsField() && setOfMapField();
 	private pointcut setOfNonStaticContainerOfPartsCollectionField() :
-		Idiom.setOfNonStaticField() && setOfContainerOfPartsField() && setOfCollectionField();
+		Pointcuts.setOfNonStaticField() && setOfContainerOfPartsField() && setOfCollectionField();
 	private pointcut setOfNonStaticNonFinalPrivateNonInstancePrivateField() :
-		Idiom.setOfNonStaticPrivateField() && setOfNonFinalField() && setOfNonInstancePrivateField();
-	private pointcut setOfNonStaticNonInstancePrivatePartField(): Idiom.setOfNonStaticField() &&
+		Pointcuts.setOfNonStaticPrivateField() && setOfNonFinalField() && setOfNonInstancePrivateField();
+	private pointcut setOfNonStaticNonInstancePrivatePartField(): Pointcuts.setOfNonStaticField() &&
 		setOfNonInstancePrivateField() && setOfPartField();
-	private pointcut setOfNonStaticNonInstancePrivateContainerOfPartsField(): Idiom.setOfNonStaticField() &&
+	private pointcut setOfNonStaticNonInstancePrivateContainerOfPartsField(): Pointcuts.setOfNonStaticField() &&
 		setOfNonInstancePrivateField() && setOfContainerOfPartsField();
 	
 	
@@ -890,7 +890,7 @@ public abstract aspect Enforcer {
 	 */
 	// Set of a field within a method declared as <code>@PureFunction</code>.
 	declare error : 
-		scope() && !exclusions() && withinCodeOfPureFunctionMethod() && Idiom.setOfField()
+		scope() && !exclusions() && withinCodeOfPureFunctionMethod() && Pointcuts.setOfField()
 		: "A @PureFunction method cannot set any field.";
 		
 	// Call to a non-<code>@PureFunction</code> method within a method declared as <code>@PureFunction</code>.

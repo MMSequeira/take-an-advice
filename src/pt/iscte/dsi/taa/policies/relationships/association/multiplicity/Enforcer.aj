@@ -26,7 +26,7 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 
-import pt.iscte.dsi.taa.policies.Idiom;
+import pt.iscte.dsi.taa.policies.Pointcuts;
 import pt.iscte.dsi.taa.policies.relationships.association.multiplicity.MultiplicityItem;
 import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
 import pt.iscte.dsi.taa.qualifiers.Multiplicity;
@@ -78,9 +78,9 @@ public abstract aspect Enforcer {
 	
 	// Execution
 	private pointcut executionOfPrivateMethodOrPrivateConstructor() :
-		Idiom.executionOfPrivateMethod() || Idiom.executionOfPrivateConstructor();
+		Pointcuts.executionOfPrivateMethod() || Pointcuts.executionOfPrivateConstructor();
 	private pointcut executionOfNonStaticNonPrivateAndNonDestructorMethod() :
-		Idiom.executionOfNonStaticNonPrivateMethod() && !Idiom.executionOfDestructor();
+		Pointcuts.executionOfNonStaticNonPrivateMethod() && !Pointcuts.executionOfDestructor();
 		
 	
 	// Static Initialization
@@ -93,14 +93,14 @@ public abstract aspect Enforcer {
 	private pointcut getOfNonCollectionField() : get(!Collection+ *);
 	
 	private pointcut getOfNonStaticMultiplicityCollectionField() :
-		Idiom.getOfNonStaticField() && getOfMultiplicityField() && getOfCollectionField();
+		Pointcuts.getOfNonStaticField() && getOfMultiplicityField() && getOfCollectionField();
 	private pointcut getOfStaticMultiplicityCollectionField() :
-		Idiom.getOfStaticField() && getOfMultiplicityField() && getOfCollectionField();
+		Pointcuts.getOfStaticField() && getOfMultiplicityField() && getOfCollectionField();
 	
 	private pointcut getOfNonStaticMultiplicityNonCollectionField() :
-		Idiom.getOfNonStaticField() && getOfMultiplicityField() && getOfNonCollectionField();
+		Pointcuts.getOfNonStaticField() && getOfMultiplicityField() && getOfNonCollectionField();
 	private pointcut getOfStaticMultiplicityNonCollectionField() :
-		Idiom.getOfStaticField() && getOfMultiplicityField() && getOfNonCollectionField();
+		Pointcuts.getOfStaticField() && getOfMultiplicityField() && getOfNonCollectionField();
 	
 	
 	// Set
@@ -109,14 +109,14 @@ public abstract aspect Enforcer {
 	private pointcut setOfNonCollectionField() : set(!Collection+ *);
 	
 	private pointcut setOfNonStaticMultiplicityCollectionField() :
-		Idiom.setOfNonStaticField() && setOfMultiplicityField() && setOfCollectionField();
+		Pointcuts.setOfNonStaticField() && setOfMultiplicityField() && setOfCollectionField();
 	private pointcut setOfStaticMultiplicityCollectionField() :
-		Idiom.setOfStaticField() && setOfMultiplicityField() && setOfCollectionField();
+		Pointcuts.setOfStaticField() && setOfMultiplicityField() && setOfCollectionField();
 	
 	private pointcut setOfNonStaticMultiplicityNonCollectionField() :
-		Idiom.setOfNonStaticField() && setOfMultiplicityField() && setOfNonCollectionField();
+		Pointcuts.setOfNonStaticField() && setOfMultiplicityField() && setOfNonCollectionField();
 	private pointcut setOfStaticMultiplicityNonCollectionField() :
-		Idiom.setOfStaticField() && setOfMultiplicityField() && setOfNonCollectionField();
+		Pointcuts.setOfStaticField() && setOfMultiplicityField() && setOfNonCollectionField();
 	
 		
 	// Access (Get or Set)
@@ -156,7 +156,7 @@ public abstract aspect Enforcer {
 	private pointcut executionOfPossibleNonStaticStateChangerMethodOrConstructor(Object target_object) :
 		scope() && !exclusions() &&
 		(executionOfNonStaticNonPrivateAndNonDestructorMethod() ||
-		Idiom.executionOfNonPrivateConstructor()) &&
+		Pointcuts.executionOfNonPrivateConstructor()) &&
 		target(target_object);
 	
 	private pointcut executionOfNonStaticPossibleStateChangerMethod(Object target_object) :
@@ -166,7 +166,7 @@ public abstract aspect Enforcer {
 	
 	private pointcut executionOfPossibleStateChangerDestructor(Object target_object) :
 		scope() && !exclusions() &&
-		Idiom.executionOfDestructor() &&
+		Pointcuts.executionOfDestructor() &&
 		target(target_object);
 	
 	/*
@@ -174,10 +174,10 @@ public abstract aspect Enforcer {
 	 */
 	private pointcut executionOfPossibleStaticStateChangerMethodOrStaticInitialization() :
 		scope() && !exclusions() &&
-		(Idiom.executionOfStaticNonPrivateMethod() || staticInitialization());
+		(Pointcuts.executionOfStaticNonPrivateMethod() || staticInitialization());
 	
 	private pointcut executionOfStaticPossibleStateChangerMethod() :
-		scope() && !exclusions() && Idiom.executionOfStaticNonPrivateMethod();
+		scope() && !exclusions() && Pointcuts.executionOfStaticNonPrivateMethod();
 	
 	
 	
