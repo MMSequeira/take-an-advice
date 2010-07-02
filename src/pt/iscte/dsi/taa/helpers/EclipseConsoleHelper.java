@@ -23,7 +23,7 @@ import org.aspectj.lang.reflect.SourceLocation;
 
 public class EclipseConsoleHelper {
 	/**
-	 * Converts the static part's signature of a joinPoint into the hyperlink format that eclipse uses in its console.
+	 * Converts  the static part's signature of a joinPoint into the hyperlink format that eclipse uses in its console.
 	 * 
 	 * @pre signature != null
 	 * @post true
