@@ -16,17 +16,17 @@
  * 
  */
 
-package pt.iscte.dsi.taa.policies.designbycontract;
+package pt.iscte.dsi.taa.policies.state;
 
-public class IllegalAccess extends RuntimeException {
+public class InvalidRelationshipException extends RuntimeException {
 	
-	protected IllegalAccess() {
+	protected InvalidRelationshipException() {
 	}
 	
-	protected IllegalAccess(String description) {
-		super(description);
+	protected InvalidRelationshipException(String message) {
+		super(message);
 	}
 	
-	private static final long serialVersionUID = 3742434211281293671L;
+	private static final long serialVersionUID = 5563839492335110077L;
 
 }

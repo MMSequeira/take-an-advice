@@ -16,14 +16,14 @@
  * 
  */
 
-package pt.iscte.dsi.taa.policies.relationships.association.multiplicity;
+package pt.iscte.dsi.taa.policies.state;
 
-public class InvalidMultiplicityRange extends RuntimeException {
+public class IllegalModificationException extends RuntimeException {
 	
-	protected InvalidMultiplicityRange() {
+	protected IllegalModificationException() {
 	}
 	
-	protected InvalidMultiplicityRange(String message) {
+	protected IllegalModificationException(String message) {
 		super(message);
 	}
 	

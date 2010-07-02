@@ -16,14 +16,14 @@
  * 
  */
 
-package pt.iscte.dsi.taa.policies.state;
+package pt.iscte.dsi.taa.policies.relationships.association.multiplicity;
 
-public class InvalidRelationship extends RuntimeException {
+public class InvalidMultiplicityValueException extends RuntimeException {
 	
-	protected InvalidRelationship() {
+	protected InvalidMultiplicityValueException() {
 	}
 	
-	protected InvalidRelationship(String message) {
+	protected InvalidMultiplicityValueException(String message) {
 		super(message);
 	}
 	

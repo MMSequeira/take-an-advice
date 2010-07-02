@@ -18,12 +18,12 @@
 
 package pt.iscte.dsi.taa.policies.state;
 
-public class IllegalModification extends RuntimeException {
+public class IllegalStateModificationException extends RuntimeException {
 	
-	protected IllegalModification() {
+	protected IllegalStateModificationException() {
 	}
 	
-	protected IllegalModification(String message) {
+	protected IllegalStateModificationException(String message) {
 		super(message);
 	}
 	

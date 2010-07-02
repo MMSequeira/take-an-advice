@@ -19,15 +19,24 @@
 package pt.iscte.dsi.taa.policies.accessibility;
 
 public class IllicitAccessException extends RuntimeException {
-	
+		
 	public IllicitAccessException() {
-	}
-	
-	public IllicitAccessException(String description) {
-		super(description);
-	}
-	
-	/*
+        super();
+    }
+
+    public IllicitAccessException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public IllicitAccessException(String message) {
+        super(message);
+    }
+
+    public IllicitAccessException(Throwable cause) {
+        super(cause);
+    }
+
+    /*
 	 * Attributes
 	 */
 	private static final long serialVersionUID = 3742434211281293671L;
