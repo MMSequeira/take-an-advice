@@ -19,6 +19,7 @@
 package pt.iscte.dsi.taa.policies.accessibility.instances;
 
 
+import pt.iscte.dsi.taa.policies.accessibility.IllicitAccessException;
 import pt.iscte.dsi.taa.policies.stack.*;
 import pt.iscte.dsi.taa.policies.Idiom;
 import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
@@ -181,7 +182,7 @@ public abstract aspect Enforcer {
 		(callToNonStaticInstancePrivateAnnotatedMethod() || accessToNonStaticInstancePrivateField()) &&
 		thisAndTargetAreNotEqual(this_object, target_object)
 	{
-		throw new IllegalAccess("\n\tAccess to a declared instance private feature." +
+		throw new IllicitAccessException("\n\tAccess to a declared instance private feature." +
 			"\n\tInvalid access from " + thisEnclosingJoinPointStaticPart.toString() +
 			"\n\tto " + thisJoinPointStaticPart.toString() + ".");
 	}
@@ -210,7 +211,7 @@ public abstract aspect Enforcer {
 			Object target_object =  stack.lastElement().getThis();
 			
 			if(this_object != target_object)
-				throw new IllegalAccess("\n\tAccess to declared instance private method through dynamic method invocation." +
+				throw new IllicitAccessException("\n\tAccess to declared instance private method through dynamic method invocation." +
 					"\n\tInvalid access from " + stack.get(stack.size()-2).toString() +
 					"\n\tto call(" + thisJoinPointStaticPart.getSignature() + ").");
 		} else

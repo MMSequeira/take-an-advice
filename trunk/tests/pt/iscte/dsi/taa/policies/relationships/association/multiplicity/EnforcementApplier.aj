@@ -16,17 +16,10 @@
  * 
  */
 
-package pt.iscte.dsi.taa.policies.accessibility.classes;
+package pt.iscte.dsi.taa.policies.relationships.association.multiplicity;
 
-public class IllegalAccess extends RuntimeException {
-	
-	protected IllegalAccess() {
-	}
-	
-	protected IllegalAccess(String description) {
-		super(description);
-	}
-	
-	private static final long serialVersionUID = 3742434211281293671L;
+import pt.iscte.dsi.taa.policies.relationships.association.multiplicity.Enforcer;
+
+public abstract aspect EnforcementApplier extends Enforcer {
 
 }
