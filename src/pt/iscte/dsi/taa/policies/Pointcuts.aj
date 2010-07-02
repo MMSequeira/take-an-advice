@@ -29,6 +29,13 @@ package pt.iscte.dsi.taa.policies;
  */
 public aspect Pointcuts
 {
+    /*
+     * General Pointcuts
+     */
+    public static final pointcut none();
+    public static final pointcut all() : !none();
+    
+    
 	/*
 	 * Call to method
 	 */

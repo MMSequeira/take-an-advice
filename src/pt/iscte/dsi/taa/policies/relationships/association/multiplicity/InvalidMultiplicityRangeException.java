@@ -18,12 +18,12 @@
 
 package pt.iscte.dsi.taa.policies.relationships.association.multiplicity;
 
-public class InvalidMultiplicityValue extends RuntimeException {
+public class InvalidMultiplicityRangeException extends RuntimeException {
 	
-	protected InvalidMultiplicityValue() {
+	protected InvalidMultiplicityRangeException() {
 	}
 	
-	protected InvalidMultiplicityValue(String message) {
+	protected InvalidMultiplicityRangeException(String message) {
 		super(message);
 	}
 	

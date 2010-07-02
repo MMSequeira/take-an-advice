@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.aspectj.lang.Aspects;
+import org.aspectj.lang.JoinPoint.StaticPart;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 import pt.iscte.dsi.taa.helpers.EclipseConsoleHelper;
@@ -59,26 +60,21 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	// declared as StateValidator.
 	declare @type : hasmethod(@StateValidator public static final boolean *()) :  @ClassStateValidated;
 	
+    protected void errorHandler(final Object target, StaticPart static_part){
+        assert stateIsValidOf(target) : "\n\tState invalid before execution of " +
+        EclipseConsoleHelper.convertToHyperlinkFormat(static_part);
+    }
+    
 	/*
-	 * General Pointcuts
+	 * Pointcuts
 	 */
-	private pointcut none();
-	private pointcut all() : !none();
-		
-	protected pointcut scope() : all();
+	protected pointcut scope() : Pointcuts.all();
 	private pointcut enforceable() : withinOfStateValidatedClass() || withinOfClassStateValidatedClass();
-	
-	private pointcut nonStaticEnforceable() : withinOfStateValidatedClass();
-	private pointcut staticEnforceable() : withinOfClassStateValidatedClass();
 	
 	/*
 	 * Exclude pointcuts inside the Policy Enforcer
 	 */  
 	private pointcut exclusions() : within(Enforcer+);
-	
-	/*
-	 * Pointcuts
-	 */
 	
 	/*
 	 * Auxiliar Pointcuts
@@ -103,8 +99,7 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	
 	private pointcut callToNonFinalNonPrivateMethod() :
 		callToNonFinalMethod() && Pointcuts.callToNonPrivateMethod();
-	
-	
+
 	
 	// Execution
 	private pointcut executionOfStateValidatorMethod() : execution(@StateValidator * *(..));
@@ -134,8 +129,6 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	private pointcut executionOfPossibleStateChangerConstructor() : 
 		Pointcuts.executionOfNonPrivateConstructor();
 	
-	
-		
 	private pointcut executionOfValidClassStateValidatorMethod() :
 		Pointcuts.executionOfStaticPublicMethod() && executionOfStateValidatorMethod() &&
 		executionOfBooleanMethod() && executionOfMethodWithNoParameters() && executionOfFinalMethod();
@@ -197,26 +190,25 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	/*
 	 * Advice's Pointcuts
 	 */
-	private pointcut executionOfPossibleNonStaticStateChangerMethodOrConstructor(Object target_object) :
-		scope() && !exclusions() && enforceable() && nonStaticEnforceable() &&
+	private pointcut executionOfNonStaticPossibleStateChangerMethodOrConstructor(Object target_object) :
+		scope() && !exclusions() && withinOfStateValidatedClass() &&
 		(executionOfNonStaticPossibleStateChangerMethod() ||
 		executionOfPossibleStateChangerConstructor()) &&
 		target(target_object);
 	
 	private pointcut executionOfNonStaticPossibleStateChangerMethodWithTarget(Object target_object) :
-		scope() && !exclusions() && enforceable() && nonStaticEnforceable() &&
+		scope() && !exclusions() && withinOfStateValidatedClass() &&
 		executionOfNonStaticPossibleStateChangerMethod() &&
 		target(target_object);
 	
 	private pointcut executionOfPossibleStateChangerDestructor(Object target_object) :
-		scope() && !exclusions() && enforceable() && nonStaticEnforceable() &&
+		scope() && !exclusions() && withinOfStateValidatedClass() &&
 		Pointcuts.executionOfDestructor() &&
 		target(target_object);
 	
 	private pointcut executionOfPossibleStaticStateChangerMethodOrStaticInitializer() :
-		scope() && !exclusions() && enforceable() && staticEnforceable() &&
-		(executionOfStaticPossibleStateChangerMethod() ||
-				staticInitialization());
+		scope() && !exclusions() && withinOfClassStateValidatedClass() &&
+		(executionOfStaticPossibleStateChangerMethod() || staticInitialization());
 		
 	
 	
@@ -235,15 +227,13 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	 * <b>Name:</b> nonStaticNonPrivateMethodsAndConstructorsInStateValidatedClassEnforcer
 	 * <p>
 	 * 
-	 * This advice verifies if after the execution of constructors, non private and non static
-	 * methods, excluding methods declared as <code>@StateValidator</code>s, the object's state
-	 * is valid.
-	 * 
+     * This advice verifies if after the execution of non private and non static methods
+     * or constructors, excluding methods declared as <code>@StateValidator</code>s, the object's state
+     * is valid.
 	 */		
 	after(final Object target_object): 
 		!inTheControlFlowOfExecutionOfStateValidatorMethod() &&
-		executionOfPossibleNonStaticStateChangerMethodOrConstructor(target_object)
-	{
+		executionOfNonStaticPossibleStateChangerMethodOrConstructor(target_object) {
 		if(DEBUG) System.out.println("After method or constructor " + thisJoinPoint);
 
 		assert stateIsValidOf(target_object) : "\n\tState invalid after execution of " +
@@ -264,10 +254,8 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	 * is valid.
 	 * 
 	 */		
-	after(): 
-		!inTheControlFlowOfExecutionOfStateValidatorMethod() &&
-		executionOfPossibleStaticStateChangerMethodOrStaticInitializer()
-	{
+	after(): !inTheControlFlowOfExecutionOfStateValidatorMethod() &&
+		executionOfPossibleStaticStateChangerMethodOrStaticInitializer() {
 		if(DEBUG) System.out.println("After method or static initializer " + thisJoinPoint);
 
 		Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
@@ -283,18 +271,17 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	 * <b>Scope:</b> Execution of non destructors, non private and non static methods
 	 *         or constructors not being annotated with <code>@StateValidator/code>.
 	 * <p>
-	 * <b>Name:</b> nonPrivateNonStaticMethodsAndConstructorsInStateValidatedClassEnforcer
+	 * <b>Name:</b> nonPrivateNonStaticMethodsInStateValidatedClassEnforcer
 	 * <p>
 	 * 
-	 * This advice verifies if before the execution of constructors, non private and non static
-	 * methods, excluding methods declared as <code>@StateValidator</code>s, the object's state
-	 * is valid.
+     * This advice verifies if before the execution non private and non static
+     * methods, excluding methods declared as <code>@StateValidator</code>s, the object's state
+     * is valid.
 	 * 
 	 */	
     before(final Object target_object):
     	!inTheControlFlowOfExecutionOfStateValidatorMethod() &&
-    	executionOfNonStaticPossibleStateChangerMethodWithTarget(target_object)
-    { 
+    	executionOfNonStaticPossibleStateChangerMethodWithTarget(target_object) { 
     	if(DEBUG) System.out.println("Before method: " + thisJoinPoint);
 
     	assert stateIsValidOf(target_object) : "\n\tState invalid before execution of " +
@@ -315,10 +302,8 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	 * methods, excluding methods declared as <code>@StateValidator</code>s, the object's state
 	 * is valid.
 	 */	
-    before():
-    	!inTheControlFlowOfExecutionOfStateValidatorMethod() &&
-    	executionOfStaticPossibleStateChangerMethod()
-    { 
+    before(): !inTheControlFlowOfExecutionOfStateValidatorMethod() &&
+    	executionOfStaticPossibleStateChangerMethod() {
     	if(DEBUG) System.out.println("Before method: " + thisJoinPoint);
 
     	Class<?> target_class = thisJoinPointStaticPart.getSignature().getDeclaringType();
@@ -336,19 +321,15 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	 * <b>Name:</b> destructorInStateValidatedClassEnforcer
 	 * <p>
 	 * 
-	 * This advice verifies if before the execution of the class destructor the object's
+	 * This advice verifies if before the execution of the class destructor, the object's
 	 * state is valid.
 	 */
     @SuppressAjWarnings("adviceDidNotMatch")
-    before(final Object target_object):
-    	!inTheControlFlowOfExecutionOfStateValidatorMethod() &&
-    	executionOfPossibleStateChangerDestructor(target_object)
-    { 
+    before(final Object target_object): !inTheControlFlowOfExecutionOfStateValidatorMethod() &&
+    	executionOfPossibleStateChangerDestructor(target_object) { 
 		if(DEBUG) System.out.println("Before destructor " + thisJoinPoint);
 
-		if(!stateIsValidOf(target_object))
-            System.out.println("\n\tState invalid before execution of " +
-            	EclipseConsoleHelper.convertToHyperlinkFormat(thisJoinPointStaticPart));
+        errorHandler(target_object, thisJoinPointStaticPart);
     }
     
     /*
@@ -366,9 +347,9 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
     declare error : 
     	scope() && !exclusions() && enforceable() &&
     	executionOfInvalidStateValidatorMethod() && Pointcuts.executionOfNonStaticMethod()
-    	: "A @StateValidator must be non-static, final, public, return a boolean and have no parameters.";
+        : "An instance @StateValidator must be non-static, final, public, return a boolean and have no parameters.";
     
-    // Definition of how a instance StateValidator method should be declared.
+        // Definition of how a class StateValidator method should be declared.
     declare error :
     	scope() && !exclusions() && enforceable() &&
     	executionOfInvalidClassStateValidatorMethod() && Pointcuts.executionOfStaticMethod() 
@@ -381,50 +362,25 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
      * valid before and after any non-private execution. Fields declared as <code>@NonState</code>
      * aren't part of the object's state hence they should not be used in these methods.
      */	
-    // Verifies if a instance StateValidator method uses non-state attributes.
-    declare error : scope() && !exclusions() && enforceable() &&
-    	withinCodeOfNonStaticValidStateValidatorMethod() && accessToNonStaticNonStateField()
-        : "A @StateValidator cannot use @NonState attributes.";
-    	
-    // Verifies if a class StateValidator method uses non-state attributes.
-    declare error : scope() && !exclusions() && enforceable() &&
-       	withinCodeOfStaticValidStateValidatorMethod() && accessToStaticNonStateField()
-        : "A @StateValidator cannot use @NonState attributes.";
+        declare error : scope() && !exclusions() && enforceable() && 
+        (withinCodeOfNonStaticValidStateValidatorMethod() || withinCodeOfStaticValidStateValidatorMethod()) &&
+            accessToNonStaticNonStateField() : "A @StateValidator method cannot use @NonState attributes.";
     
-    
-   
     /*
      * Methods not declared as <code>@StateModifier</code>s being non final must have private accessibility
      * to be called by a <code>@StateValidator</code> method.
      */
-    // Verifies if within the code of non-static @StateValidator method any non final non private method is called.
-    declare error : scope() && !exclusions() && enforceable() &&
-    	withinCodeOfNonStaticValidStateValidatorMethod() && callToNonFinalNonPrivateMethod()
-    	: "A @StateValidator method can only call non private methods if they are declared as final.";
+            declare error : scope() && !exclusions() && enforceable() &&
+            (withinCodeOfNonStaticValidStateValidatorMethod() || withinCodeOfStaticValidStateValidatorMethod()) &&
+                callToNonFinalNonPrivateMethod() : "A @StateValidator method can only call non private methods if they are declared as final.";
     	
-    
-    // Verifies if within the code of s static @StateValidator method any non final non private method is called.
-    declare error : scope() && !exclusions() && enforceable() &&
-        withinCodeOfStaticValidStateValidatorMethod() && callToNonFinalNonPrivateMethod()
-        : "A static @StateValidator method can only call non private methods if they are declared as final.";
-       	
-       	
-    
     /*
      * Methods declared as <code>@StateValidator</code> aren't supposed to change the object's state,
      * therefore they can't call <code>@StateModifier</code>s methods.
      */ 
-    // Verifies if during an instance StateValidator method execution any non static method declared as StateModifier is invoked.
-    declare error : scope() && !exclusions() && enforceable() &&
-    	withinCodeOfNonStaticValidStateValidatorMethod() && callToStateModifierMethod() 
-        : "A @StateValidator cannot change state, hence it cannot call a @StateModifier.";
-    	
-    // Verifies if during a class StateValidator method execution any static method declared as StateModifier is invoked.
-    declare error : scope() && !exclusions() && enforceable() &&
-       	withinCodeOfStaticValidStateValidatorMethod() && callToStateModifierMethod() 
-        : "A @StateValidator cannot change state, hence it cannot call a @StateModifier.";
-
-       	
+                declare error : scope() && !exclusions() && enforceable() &&
+                (withinCodeOfNonStaticValidStateValidatorMethod() || withinCodeOfStaticValidStateValidatorMethod()) &&
+                    callToStateModifierMethod() : "A @StateValidator cannot change state, hence it cannot call a @StateModifier.";          
     	
     /*
 	 * Warnings
@@ -441,7 +397,7 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
      * enforcer aspect.
      */
     declare warning : scope() && !exclusions() && enforceable() && !withinOfEnforcer() && callToStateValidatorMethod()
-    	: "A @StateValidator should, only, be called by the enforcer.";
+        : "A @StateValidator method should only be called by the enforcer.";
   
         	
     /*
@@ -523,9 +479,12 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
         
     	// Invoke all StateValidator methods and if any is false invalidate the object's state.
         try {
-        	for(Method is_state_valid : non_static_state_validators)
-        		if(!(Boolean)is_state_valid.invoke(object))
-        			return false;
+            for(Method is_state_valid : non_static_state_validators) {
+                Object result = is_state_valid.invoke(object);
+                assert result instanceof Boolean : "Stored @StateValidators should always return Boolean. Something is VERY wrong.";
+                if(!(Boolean)result)
+                    return false;
+            }
         // Catch exceptions in the invocation of the StateValidator methods.
         } catch (Exception exception) {
         	assert false : exception;
@@ -554,9 +513,12 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
         
     	// Invoke all StateValidator methods and if any is false invalidate the class's state.
         try {
-        	for(Method is_state_valid : static_state_validators)
-        		if(!(Boolean)is_state_valid.invoke(null))
-        			return false;
+            for(Method is_state_valid : static_state_validators) {
+                Object result = is_state_valid.invoke(null);
+                assert result instanceof Boolean : "Stored @StateValidators should always return Boolean. Something is VERY wrong.";
+                if(!(Boolean)result)
+                    return false;
+            }
         // Catch exceptions in the invocation of the StateValidator methods.
         } catch (Exception exception) {
         	assert false : exception;

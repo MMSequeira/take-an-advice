@@ -16,17 +16,18 @@
  * 
  */
 
-package pt.iscte.dsi.taa.policies.accessibility.instances;
+package pt.iscte.dsi.taa.policies.accessibility;
 
-public class InvalidMethodDefinition extends RuntimeException {
+public class InvalidMethodDefinitionException extends RuntimeException {
 	
-	protected InvalidMethodDefinition() {
+    // TODO Add other relevant constructors.
+	public InvalidMethodDefinitionException() {
 	}
 	
-	protected InvalidMethodDefinition(String description) {
+	public InvalidMethodDefinitionException(String description) {
 		super(description);
 	}
 	
-	private static final long serialVersionUID = 3742434211281593671L;
+	private static final long serialVersionUID = 3442434211281593671L;
 
 }

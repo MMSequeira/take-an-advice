@@ -30,7 +30,7 @@ public class MultiplicityRange {
 	{
 		if(!upper_bound.equals(MultiplicityRange.UNLIMITED) &&
 			Integer.parseInt(lower_bound) > Integer.parseInt(upper_bound))
-			throw new InvalidMultiplicityRange("Upper bound smaller than lower bound (" + upper_bound + " < " + lower_bound + ")." );
+			throw new InvalidMultiplicityRangeException("Upper bound smaller than lower bound (" + upper_bound + " < " + lower_bound + ")." );
 		
 		this.lower_bound = lower_bound;
 		this.upper_bound = upper_bound;
