@@ -20,6 +20,7 @@ package pt.iscte.dsi.taa.policies.accessibility.classes;
 
 import pt.iscte.dsi.taa.policies.accessibility.classes.Enforcer;
 
-public abstract aspect AccessibilityClassesEnforcementApplier extends Enforcer {
+// TODO Activate all test appliers, though with a scope limited to the tests themselves.
+public /*abstract*/ aspect AccessibilityClassesEnforcementApplier extends Enforcer {
 	
 }
