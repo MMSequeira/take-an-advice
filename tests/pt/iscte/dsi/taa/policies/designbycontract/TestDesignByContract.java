@@ -2,12 +2,15 @@ package pt.iscte.dsi.taa.policies.designbycontract;
 
 import org.junit.*;
 
+import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
+import pt.iscte.dsi.taa.qualifiers.NonState;
 import pt.iscte.dsi.taa.qualifiers.StateValidator;
 
 public class TestDesignByContract {
 	
-	public static class A {
-		public boolean state;
+	private static class A {
+	    @InstancePrivate
+		private boolean state;
 		public A(final boolean state) {
 			this.state = state;
 		}
@@ -32,8 +35,11 @@ public class TestDesignByContract {
 	 */
 	@Before
 	public void setUp(){
-		a = new A(true);
-		a.state = false;
+	    try {
+	        a = new A(false);
+	    } catch (AssertionError expectedAndIgnored) {
+	        
+	    }
 	}
 
 	@Test(expected = AssertionError.class)
@@ -62,7 +68,8 @@ public class TestDesignByContract {
 	/*
  	 * Attributes
  	 */
-	A a;
+    @InstancePrivate
+	private A a;
 		
 	//TODO nao e testado o ultimo before
 	

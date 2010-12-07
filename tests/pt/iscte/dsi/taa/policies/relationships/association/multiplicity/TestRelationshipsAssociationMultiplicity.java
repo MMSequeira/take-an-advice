@@ -2,6 +2,8 @@ package pt.iscte.dsi.taa.policies.relationships.association.multiplicity;
 
 import org.junit.*;
 
+import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
+
 public class TestRelationshipsAssociationMultiplicity {
 	
 	/**
@@ -142,6 +144,7 @@ public class TestRelationshipsAssociationMultiplicity {
 	/*
  	 * Attributes
  	 */
+    @InstancePrivate
 	private A a;
 	
 	//TODO o terceiro before nao tem teste

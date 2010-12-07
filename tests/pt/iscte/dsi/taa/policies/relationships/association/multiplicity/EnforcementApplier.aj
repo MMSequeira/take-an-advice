@@ -20,6 +20,6 @@ package pt.iscte.dsi.taa.policies.relationships.association.multiplicity;
 
 import pt.iscte.dsi.taa.policies.relationships.association.multiplicity.Enforcer;
 
-public abstract aspect EnforcementApplier extends Enforcer {
+public /* abstract */ aspect EnforcementApplier extends Enforcer {
 
 }

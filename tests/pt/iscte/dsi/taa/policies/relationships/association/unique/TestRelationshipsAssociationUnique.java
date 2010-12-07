@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
+
 public class TestRelationshipsAssociationUnique {
 	
 	/**
@@ -37,6 +39,7 @@ public class TestRelationshipsAssociationUnique {
 	/*
  	 * Attributes
  	 */
+    @InstancePrivate
 	private A a;
 	
 	//TODO o 3º e 5º before nao tem teste

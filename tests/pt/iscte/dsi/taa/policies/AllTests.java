@@ -19,8 +19,6 @@ import pt.iscte.dsi.taa.policies.relationships.association.unique.TestRelationsh
 	TestRelationshipsAssociationUnique.class
 })
 
-// TODO Remove this annotation after understanding why this compiles!
-@ClassStateValidated
 public class AllTests {
 
 }
