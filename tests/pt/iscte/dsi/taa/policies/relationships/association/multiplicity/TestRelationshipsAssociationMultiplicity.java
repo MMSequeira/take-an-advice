@@ -3,6 +3,7 @@ package pt.iscte.dsi.taa.policies.relationships.association.multiplicity;
 import org.junit.*;
 
 import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
+import pt.iscte.dsi.taa.qualifiers.StateModifier;
 
 public class TestRelationshipsAssociationMultiplicity {
 	
@@ -17,16 +18,19 @@ public class TestRelationshipsAssociationMultiplicity {
 //	Testes para a lista b_1
 
 	@Test
+	@StateModifier
 	public void multiplicity0ToInfinity_0Element(){
 		a = new A(1);
 	}
 	
 	@Test
+    @StateModifier
 	public void multiplicity0ToInfinity_1Element(){
 		a = new A(1, new B(1));
 	}
 	
 	@Test
+    @StateModifier
 	public void multiplicity0ToInfinity_MoreThan1Element(){
 		a = new A(1, new B(1));
 		a.addToList(1, 2);
@@ -37,16 +41,19 @@ public class TestRelationshipsAssociationMultiplicity {
 	
 	
 	@Test(expected = AssertionError.class)
+    @StateModifier
 	public void multiplicity1To5_0Element(){
 		a = new A(2);
 	}
 	
 	@Test
+    @StateModifier
 	public void multiplicity1To5_1Element(){
 		a = new A(2, new B(1));
 	}
 	
 	@Test
+    @StateModifier
 	public void multiplicity1To5_5Element(){
 		a = new A(2, new B(1));
 		a.addToList(2, 2);
@@ -56,6 +63,7 @@ public class TestRelationshipsAssociationMultiplicity {
 	}
 	
 	@Test(expected = AssertionError.class)
+    @StateModifier
 	public void multiplicity1To5_MoreThan5Element(){
 		a = new A(2, new B(1));
 		a.addToList(2, 2);
@@ -66,6 +74,7 @@ public class TestRelationshipsAssociationMultiplicity {
 	}
 	
 	@Test(expected = AssertionError.class)
+    @StateModifier
 	public void multiplicity1To5_RemoveElement(){
 		a = new A(2, new B(1));
 		a.removeFromList(2, 0);
@@ -74,16 +83,19 @@ public class TestRelationshipsAssociationMultiplicity {
 //	Testes para a lista b_3
 	
 	@Test(expected = AssertionError.class)
+    @StateModifier
 	public void multiplicity1To2And4ToInfinity_0Element(){
 		a = new A(3);
 	}
 	
 	@Test
+    @StateModifier
 	public void multiplicity1To2And4ToInfinity_1Element(){
 		a = new A(3, new B(1));
 	}
 	
 	@Test(expected = AssertionError.class)
+    @StateModifier
 	public void multiplicity1To2And4ToInfinity_3Element(){
 		a = new A(3, new B(1));
 		a.addToList(3, 2);
@@ -91,6 +103,7 @@ public class TestRelationshipsAssociationMultiplicity {
 	}
 	
 	@Test
+    @StateModifier
 	public void multiplicity1To2And4ToInfinity_4Elements(){
 		a = new A(3, new B(1));
 		a.addToList(3, 2);
@@ -99,6 +112,7 @@ public class TestRelationshipsAssociationMultiplicity {
 	}
 	
 	@Test(expected = AssertionError.class)
+    @StateModifier
 	public void multiplicity1To2And4ToInfinity_MoreThan4Element(){
 		a = new A(3, new B(1));
 		a.addToList(3, 2);
@@ -128,6 +142,7 @@ public class TestRelationshipsAssociationMultiplicity {
 	 * Tears down the fixtures
 	 */
 	@After
+    @StateModifier
 	public void tearDown(){
 		a = null;
 	}

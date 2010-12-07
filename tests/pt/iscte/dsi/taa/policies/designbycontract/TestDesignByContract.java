@@ -4,6 +4,7 @@ import org.junit.*;
 
 import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
 import pt.iscte.dsi.taa.qualifiers.NonState;
+import pt.iscte.dsi.taa.qualifiers.StateModifier;
 import pt.iscte.dsi.taa.qualifiers.StateValidator;
 
 public class TestDesignByContract {
@@ -23,6 +24,11 @@ public class TestDesignByContract {
 			
 		}
 		
+		@StateModifier
+		public void setStateTo(final boolean state) {
+		    this.state = state;
+		}
+		
 		// TODO Declare error para más aplicações de StateValidator. Fará sentido o final.
 		@StateValidator
 		public final boolean stateValidator() {
@@ -34,12 +40,16 @@ public class TestDesignByContract {
 	 * Setting up Fixtures 
 	 */
 	@Before
+    @StateModifier
 	public void setUp(){
 	    try {
-	        a = new A(false);
-	    } catch (AssertionError expectedAndIgnored) {
-	        
+	        a = new A(true);
+	        a.setStateTo(false);
+            System.out.println("Did not fail! Weird...");
+	    } catch (AssertionError expectedAndIgnored) {	        
+	        System.out.println("Failed as expected.");
 	    }
+	    System.out.println("Construction OK.");
 	}
 
 	@Test(expected = AssertionError.class)
@@ -49,6 +59,8 @@ public class TestDesignByContract {
 
 	@Test(expected = AssertionError.class)
 	public void method(){
+//	    assert false;
+//	    a = null;
 		a.foo();
 	}
 	
@@ -61,6 +73,7 @@ public class TestDesignByContract {
 	 * Tears down the fixtures
 	 */
 	@After
+	@StateModifier
 	public void tearDown(){
 		a = null;
 	}
