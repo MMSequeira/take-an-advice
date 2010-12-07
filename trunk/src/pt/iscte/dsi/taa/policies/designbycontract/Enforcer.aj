@@ -430,7 +430,7 @@ public abstract aspect Enforcer pertypewithin(@(StateValidated || ClassStateVali
 	 */
     @InstancePrivate
     private void updateStateValidatorsOf(Object object) {
-    	assert Aspects.aspectOf(this.getClass(), object.getClass()) == this : "Instantiation model is wrong??!!";
+//    	assert Aspects.aspectOf(this.getClass(), object.getClass()) == this : "Instantiation model is wrong??!!";
         	
        	non_static_state_validators = new ArrayList<Method>();
         	    	
