@@ -52,8 +52,7 @@ public class C {
 	 * Remove all elements from list
 	 */
 	public static void clearStaticList(){
-		for(B b : b_static_list)
-			b_static_list.remove(b);
+	    b_static_list.clear();
 	}
 	
 	//TODO fizemos so para testes

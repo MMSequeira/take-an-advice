@@ -56,21 +56,14 @@ public class TestRelationshipsAssociationMultiplicity {
     @StateModifier
 	public void multiplicity1To5_5Element(){
 		a = new A(2, new B(1));
-		a.addToList(2, 2);
-		a.addToList(2, 3);
 		a.addToList(2, 4);
-		a.addToList(2, 5);
 	}
 	
 	@Test(expected = AssertionError.class)
     @StateModifier
 	public void multiplicity1To5_MoreThan5Element(){
 		a = new A(2, new B(1));
-		a.addToList(2, 2);
-		a.addToList(2, 3);
-		a.addToList(2, 4);
 		a.addToList(2, 5);
-		a.addToList(2, 6);
 	}
 	
 	@Test(expected = AssertionError.class)
@@ -99,29 +92,21 @@ public class TestRelationshipsAssociationMultiplicity {
 	public void multiplicity1To2And4ToInfinity_3Element(){
 		a = new A(3, new B(1));
 		a.addToList(3, 2);
-		a.addToList(3, 3);
 	}
 	
 	@Test
     @StateModifier
 	public void multiplicity1To2And4ToInfinity_4Elements(){
 		a = new A(3, new B(1));
-		a.addToList(3, 2);
 		a.addToList(3, 3);
-		a.addToList(3, 4);
 	}
 	
-	@Test(expected = AssertionError.class)
     @StateModifier
 	public void multiplicity1To2And4ToInfinity_MoreThan4Element(){
 		a = new A(3, new B(1));
-		a.addToList(3, 2);
-		a.addToList(3, 3);
 		a.addToList(3, 4);
-		a.addToList(3, 5);
 	}
 	
-	//TODO fizemos os testes tendo em conta que vão ser feitos por esta ordem, sera que e melhor fazer clear a lista no inicio de todos os testes e comecar do inicio? o before é feito antes de cada teste por isso n e preciso
 	@Test
 	public void staticMultiplicity0To3_1Element(){
 		C.addToStaticList(1);
@@ -129,12 +114,16 @@ public class TestRelationshipsAssociationMultiplicity {
 	
 	@Test
 	public void staticMultiplicity0To3_3Element(){
+        C.addToStaticList(1);
 		C.addToStaticList(2);
 		C.addToStaticList(3);
 	}
 	
 	@Test(expected = AssertionError.class)
 	public void staticMultiplicity0To3_MoreThan3Element(){
+        C.addToStaticList(1);
+        C.addToStaticList(2);
+        C.addToStaticList(3);
 		C.addToStaticList(4);
 	}
 	
