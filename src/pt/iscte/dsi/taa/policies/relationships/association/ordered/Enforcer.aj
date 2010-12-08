@@ -417,23 +417,25 @@ public abstract aspect Enforcer {
      */
     // Annotate a non-static object, which is not a Collection, with the Ordered
     // qualifier
-    declare error : scope() && !exclusions() && getOfNonStaticOrderedNonComparableCollectionField()
-        : "The non-static attribute being gotten can't be annotated with the Ordered qualifier. Only a Collection can.";
+    
+    // TODO Fix these error declarations. They are wrong. Ordered and Sorted are NOT the same thing!
+//    declare error : scope() && !exclusions() && getOfNonStaticOrderedNonComparableCollectionField()
+//        : "The non-static attribute being gotten can't be annotated with the Ordered qualifier. Only a Collection can.";
 
     // Annotate a non-static object, which is not a Collection, with the Ordered
     // qualifier
-    declare error : scope() && !exclusions() && setOfNonStaticOrderedNonComparableCollectionField()
-        : "The non-static attribute being set can't be annotated with the Ordered qualifier. Only a Collection can.";
+//    declare error : scope() && !exclusions() && setOfNonStaticOrderedNonComparableCollectionField()
+//        : "The non-static attribute being set can't be annotated with the Ordered qualifier. Only a Collection can.";
 
     // Annotate a static object, which is not a Collection, with the Ordered
     // qualifier
-    declare error : scope() && !exclusions() && getOfStaticOrderedNonComparableCollectionField()
-        : "The static attribute being gotten can't be annotated with the Ordered qualifier. Only a Collection can.";
+//    declare error : scope() && !exclusions() && getOfStaticOrderedNonComparableCollectionField()
+//        : "The static attribute being gotten can't be annotated with the Ordered qualifier. Only a Collection can.";
 
     // Annotate a static object, which is not a Collection, with the Ordered
     // qualifier
-    declare error : scope() && !exclusions() && setOfStaticOrderedNonComparableCollectionField()
-        : "The static attribute being set can't be annotated with the Ordered qualifier. Only a Collection can.";
+//    declare error : scope() && !exclusions() && setOfStaticOrderedNonComparableCollectionField()
+//        : "The static attribute being set can't be annotated with the Ordered qualifier. Only a Collection can.";
 
     /*
      * Warnings

@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pt.iscte.dsi.taa.qualifiers.InstancePrivate;
+import pt.iscte.dsi.taa.qualifiers.StateModifier;
 
 public class TestRelationshipsAssociationUnique {
 	
@@ -12,6 +13,7 @@ public class TestRelationshipsAssociationUnique {
 	 * Setting up Fixtures 
 	 */
 	@Before
+    @StateModifier
 	public void setUp(){
 		a = new A();
 		a.addToUniqueList(40);
@@ -32,6 +34,7 @@ public class TestRelationshipsAssociationUnique {
 	 * Tears down the fixtures
 	 */
 	@After
+    @StateModifier
 	public void tearDown(){
 		a = null;
 	}
