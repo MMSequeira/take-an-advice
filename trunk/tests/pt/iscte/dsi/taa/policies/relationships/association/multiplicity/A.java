@@ -99,19 +99,16 @@ public class A {
 	public void addToList(final int list, final int number) {
 		switch(list){
 		case 1:
-//			for (int i = 0; i < number; i++)
-//				b_list1.add(new B(i));
-            b_list1.add(new B(number));
+			for (int i = 0; i < number; i++)
+				b_list1.add(new B(i));
 			break;
 		case 2:
-//			for (int i = 0; i < number; i++)
-//				b_list2.add(new B(i));
-            b_list2.add(new B(number));
+			for (int i = 0; i < number; i++)
+				b_list2.add(new B(i));
 			break;
 		case 3:
-//			for (int i = 0; i < number; i++)
-//				b_list3.add(new B(i));
-            b_list3.add(new B(number));
+			for (int i = 0; i < number; i++)
+				b_list3.add(new B(i));
 			break;
 		}
 	}

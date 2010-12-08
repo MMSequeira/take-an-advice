@@ -45,11 +45,8 @@ public class TestDesignByContract {
 	    try {
 	        a = new A(true);
 	        a.setStateTo(false);
-            System.out.println("Did not fail! Weird...");
 	    } catch (AssertionError expectedAndIgnored) {	        
-	        System.out.println("Failed as expected.");
 	    }
-	    System.out.println("Construction OK.");
 	}
 
 	@Test(expected = AssertionError.class)

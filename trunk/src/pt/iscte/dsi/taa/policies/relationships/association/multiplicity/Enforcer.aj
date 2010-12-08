@@ -506,13 +506,14 @@ public abstract aspect Enforcer {
         if (debug)
             System.out.println("Multiplicity is valid of: " + target_class);
 
-        if (class_collections.containsKey(target_class))
+        
+        if (class_collections.containsKey(target_class)) {            
             for (ReferencesCollectionData data : class_collections.get(target_class)
-                                                                  .values()) {
+                                                                  .values())
                 if (!data.getMultiplicityItem().contains(data.getCollection()
                                                              .size()))
                     return false;
-            }
+        }
 
         return true;
     }
